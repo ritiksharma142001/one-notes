@@ -1,10 +1,4 @@
-
 // @ts-check
-// `@type` JSDoc annotations allow editor autocompletion and type checking
-// (when paired with `@ts-check`).
-// There are various equivalent ways to declare your Docusaurus config.
-// See: https://docusaurus.io/docs/api/docusaurus-config
-
 import { themes as prismThemes } from 'prism-react-renderer';
 
 /** @type {import('@docusaurus/types').Config} */
@@ -13,13 +7,12 @@ const config = {
   tagline: 'Notes',
   favicon: 'img/favicon.ico',
 
-  // GitHub Pages deployment config
   url: 'https://es-notes.ritik.dev',
-  baseUrl: '/',
+  baseUrl: '/one-notes/',
 
-  organizationName: 'ritikssharma142001', // GitHub org/user name
-  projectName: 'one-notes',     // GitHub repo name
-  trailingSlash: true, // Set to `true` or `false` based on your preference
+  organizationName: 'ritiksharma142001', // ✅ your GitHub username
+  projectName: 'one-notes',              // ✅ your repo name
+  trailingSlash: true,
   onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'warn',
 
@@ -36,7 +29,7 @@ const config = {
         docs: {
           sidebarPath: './sidebars.js',
           routeBasePath: '/',
-          editUrl: 'https://github.com/es-notes/one-notes/edit/main/',
+          editUrl: 'https://github.com/ritiksharma142001/one-notes/edit/main/',
         },
         blog: false,
         theme: {
@@ -46,26 +39,43 @@ const config = {
     ],
   ],
 
+  // ✅ Register the search theme here
+  // themes: ['@docusaurus/theme-search-algolia'],
+
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
+      algolia: {
+        apiKey: 'a3aaac97d1164b77b71bbaa3fa59e5f9',
+        indexName: 'ritiksharma142001io',
+        appId: 'SK5BV5M8DQ',
+        contextualSearch: true,
+      },
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
         title: 'esNot',
         logo: {
           alt: 'esNot',
-          src: 'img/logo.svg',
+          src: 'img/logo2.svg',
         },
         items: [
-          { to: '/docs/intro', label: 'Docs', position: 'left' },
-          { to: '/blog', label: 'Blog', position: 'left' },
           {
-            href: 'https://github.com/es-notes/one-notes',
+            href: '/about',
+            label: 'About Us',
+            position: 'right',
+          },
+          {
+            href: '/contact',
+            label: 'Contact',
+            position: 'right',
+          },
+          {
+            href: 'https://github.com/ritiksharma142001/one-notes',
             label: 'GitHub',
             position: 'right',
           },
           {
-            href: 'https://github.com/es-notes/one-notes',
+            href: 'https://eritik.vercel.app/',
             label: 'Portfolio',
             position: 'right',
           },
@@ -79,7 +89,7 @@ const config = {
             items: [
               {
                 label: 'Tutorial',
-                to: '/docs/intro',
+                to: 'https://ritiksharma142001.github.io/one-notes/',
               },
             ],
           },
@@ -88,15 +98,15 @@ const config = {
             items: [
               {
                 label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
+                href: '#',
               },
               {
                 label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
+                href: '#',
               },
               {
                 label: 'X',
-                href: 'https://x.com/docusaurus',
+                href: '#',
               },
             ],
           },
@@ -104,17 +114,17 @@ const config = {
             title: 'More',
             items: [
               {
-                label: 'Blog',
-                to: '/blog',
+                label: 'Portfolio',
+                to: 'https://eritik.vercel.app/',
               },
               {
                 label: 'GitHub',
-                href: 'https://github.com/es-notes/one-notes',
+                href: 'https://github.com/ritiksharma142001/one-notes',
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} One Notes, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © 2024 - ${new Date().getFullYear()} Made by Ritik Sharma.`,
       },
       prism: {
         theme: prismThemes.github,
