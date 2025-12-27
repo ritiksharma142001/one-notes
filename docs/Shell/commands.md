@@ -48,3 +48,6 @@ In Linux and Unix-like systems, instead of traditional *cut* and *paste*, we oft
 
 - `history` — Show the list of previously executed commands  
 - `history -c` — **Clear** the command history  
+
+
+## Wecome to new beginning
