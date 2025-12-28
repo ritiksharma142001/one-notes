@@ -1,1 +1,0 @@
-"use strict";(globalThis.webpackChunkes_note=globalThis.webpackChunkes_note||[]).push([[1736],{60277(e){e.exports=JSON.parse('{"tags":[{"label":"DevOps","permalink":"/one-notes/tags/dev-ops","count":1},{"label":"Development","permalink":"/one-notes/tags/development","count":1},{"label":"Operations","permalink":"/one-notes/tags/operations","count":1}]}')}}]);
