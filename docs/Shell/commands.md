@@ -52,3 +52,12 @@ In Linux and Unix-like systems, instead of traditional *cut* and *paste*, we oft
 
 - `history` — Show the list of previously executed commands  
 - `history -c` — **Clear** the command history  
+
+## Command Line History
+
+- `history` — Show the list of previously executed commands  
+- `history -c` — **Clear** the command history  
+
+
+- `history` — Show the list of previously executed commands  
+- `history -c` — **Clear** the command history
