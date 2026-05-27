@@ -162,6 +162,9 @@ sidebar_position: 3
 - `dd` → delete line  
 - `yy` → copy line  
 
+## Quick Summary-2
+
+- 'i'
 ---
 
 
