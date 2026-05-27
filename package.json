@@ -7,7 +7,7 @@
     "start": "docusaurus start",
     "build": "docusaurus build",
     "swizzle": "docusaurus swizzle",
-    "deploy": "cross-env GIT_USER=ritiksharma142001 docusaurus deploy",
+    "deploy": "cross-env USE_SSH=true GIT_USER=ritiksharma142001 docusaurus deploy",
     "clear": "docusaurus clear",
     "serve": "docusaurus serve",
     "write-translations": "docusaurus write-translations",
@@ -15,10 +15,10 @@
     "build:search": "node scripts/buildSearchIndex.js"
   },
   "dependencies": {
-    "@docusaurus/core": "3.7.0",
-    "@docusaurus/plugin-client-redirects": "^3.7.0",
-    "@docusaurus/preset-classic": "3.7.0",
-    "@docusaurus/theme-search-algolia": "^3.7.0",
+    "@docusaurus/core": "^3.10.1",
+    "@docusaurus/plugin-client-redirects": "^3.10.1",
+    "@docusaurus/preset-classic": "^3.10.1",
+    "@docusaurus/theme-search-algolia": "^3.10.1",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
     "gray-matter": "^4.0.3",
