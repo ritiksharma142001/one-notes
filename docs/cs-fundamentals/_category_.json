@@ -1,0 +1,9 @@
+{
+  "label": "CS Fundamentals",
+  "position": 12,
+  "link": {
+    "type": "generated-index",
+    "description": "Operating systems, DBMS and computer networks — the core subjects asked in interviews.",
+    "slug": "/cs-fundamentals"
+  }
+}

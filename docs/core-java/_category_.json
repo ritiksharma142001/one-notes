@@ -3,6 +3,7 @@
   "position": 2,
   "link": {
     "type": "generated-index",
-    "description": "5 minutes to learn the most important Docusaurus concepts."
+    "description": "Java from the ground up: the JVM, OOP, strings, exceptions, collections, multithreading and streams.",
+    "slug": "/core-java"
   }
 }

@@ -1,0 +1,9 @@
+{
+  "label": "Resources",
+  "position": 14,
+  "link": {
+    "type": "generated-index",
+    "description": "Hand-picked links and keyboard shortcuts that save time every day.",
+    "slug": "/resources"
+  }
+}

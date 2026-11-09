@@ -1,0 +1,9 @@
+{
+  "label": "Interview Prep",
+  "position": 13,
+  "link": {
+    "type": "generated-index",
+    "description": "Question banks and model answers for Java and web developer interviews.",
+    "slug": "/interview"
+  }
+}

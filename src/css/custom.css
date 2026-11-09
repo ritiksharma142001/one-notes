@@ -1,78 +1,206 @@
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
+/* One Notes theme — Infima overrides */
 
-/* You can override the default Infima variables here. */
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
-
-/* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: hsl(230, 80%, 50%);
-  --ifm-color-primary-dark: hsl(230, 80%, 45%);
-  --ifm-color-primary-darker: hsl(230, 80%, 40%);
-  --ifm-color-primary-darkest: hsl(230, 80%, 35%);
-  --ifm-color-primary-light: hsl(230, 80%, 60%);
-  --ifm-color-primary-lighter: hsl(230, 80%, 70%);
-  --ifm-color-primary-lightest: hsl(230, 80%, 80%);
-  
-  --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.08);
+  --ifm-color-primary: #4f46e5;
+  --ifm-color-primary-dark: #4338ca;
+  --ifm-color-primary-darker: #3f35c0;
+  --ifm-color-primary-darkest: #3730a3;
+  --ifm-color-primary-light: #6366f1;
+  --ifm-color-primary-lighter: #7173f3;
+  --ifm-color-primary-lightest: #818cf8;
+
+  --ifm-font-family-base: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --ifm-heading-font-weight: 700;
+  --ifm-line-height-base: 1.7;
+  --ifm-code-font-size: 88%;
+  --ifm-global-radius: 10px;
+  --ifm-navbar-height: 3.75rem;
+  --ifm-container-width-xl: 1280px;
+  --ifm-toc-border-color: #e5e7eb;
+  --ifm-table-stripe-background: rgba(79, 70, 229, 0.03);
+  --docusaurus-highlighted-code-line-bg: rgba(79, 70, 229, 0.1);
 }
 
 [data-theme='dark'] {
-  --ifm-color-primary: hsl(230, 80%, 70%);
-  --ifm-color-primary-dark: hsl(230, 80%, 65%);
-  --ifm-color-primary-darker: hsl(230, 80%, 60%);
-  --ifm-color-primary-darkest: hsl(230, 80%, 55%);
-  --ifm-color-primary-light: hsl(230, 80%, 75%);
-  --ifm-color-primary-lighter: hsl(230, 80%, 80%);
-  --ifm-color-primary-lightest: hsl(230, 80%, 85%);
+  --ifm-color-primary: #8b93ff;
+  --ifm-color-primary-dark: #7680ff;
+  --ifm-color-primary-darker: #6b76ff;
+  --ifm-color-primary-darkest: #4b57ff;
+  --ifm-color-primary-light: #a0a6ff;
+  --ifm-color-primary-lighter: #abb0ff;
+  --ifm-color-primary-lightest: #cbceff;
 
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-background-color: #0d1017;
+  --ifm-background-surface-color: #141824;
+  --ifm-navbar-background-color: rgba(13, 16, 23, 0.85);
+  --ifm-footer-background-color: #090b10;
+  --ifm-toc-border-color: #232838;
+  --ifm-table-stripe-background: rgba(255, 255, 255, 0.025);
+  --docusaurus-highlighted-code-line-bg: rgba(139, 147, 255, 0.15);
 }
 
-
-.custom-search-wrapper {
-  position: relative;
-  max-width: 400px;
-  margin: 0 auto;
+/* Navbar: glassy, thin border */
+.navbar {
+  backdrop-filter: saturate(180%) blur(10px);
+  border-bottom: 1px solid var(--ifm-toc-border-color);
+  box-shadow: none;
 }
 
-.custom-search-input {
+:root:not([data-theme='dark']) .navbar {
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+.navbar__title {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* GitHub icon in the navbar */
+.header-github-link::before {
+  content: '';
+  display: flex;
+  width: 22px;
+  height: 22px;
+  background-color: var(--ifm-navbar-link-color);
+  mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.4 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3'/%3E%3C/svg%3E")
+    no-repeat center / contain;
+}
+
+.header-github-link:hover::before {
+  background-color: var(--ifm-color-primary);
+}
+
+/* Readable doc column */
+.theme-doc-markdown {
+  font-size: 1.02rem;
+}
+
+.theme-doc-markdown h1 {
+  font-size: 2.4rem;
+  letter-spacing: -0.03em;
+}
+
+.theme-doc-markdown h2 {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--ifm-toc-border-color);
+  letter-spacing: -0.015em;
+}
+
+.theme-doc-markdown h3 {
+  margin-top: 1.75rem;
+}
+
+/* Tables: full width on wide screens, scroll on phones */
+.theme-doc-markdown table {
+  display: table;
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid var(--ifm-color-primary);
+  font-size: 0.94rem;
+}
+
+@media (max-width: 768px) {
+  .theme-doc-markdown table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+.theme-doc-markdown th {
+  background: var(--ifm-color-emphasis-100);
+  text-align: left;
+}
+
+/* Code */
+code {
+  border: none;
+  background: color-mix(in srgb, var(--ifm-color-primary) 9%, transparent);
+}
+
+pre code {
+  background: transparent;
+}
+
+.theme-code-block {
+  border: 1px solid var(--ifm-toc-border-color);
+  box-shadow: none;
+}
+
+kbd {
+  font-family: var(--ifm-font-family-monospace);
+  font-size: 0.8em;
+  padding: 0.1rem 0.4rem;
   border-radius: 6px;
-  font-size: 16px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-bottom-width: 2px;
+  background: var(--ifm-background-surface-color);
+  box-shadow: none;
 }
 
-.custom-search-results {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: white;
-  width: 100%;
-  border: 1px solid #ccc;
-  z-index: 10;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* Q&A <details> blocks */
+.theme-doc-markdown details {
+  --ifm-alert-background-color: var(--ifm-background-surface-color);
+  --ifm-alert-border-color: var(--ifm-toc-border-color);
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: 12px;
+  margin-bottom: 0.6rem;
+  box-shadow: none;
 }
 
-.custom-search-results li a {
-  display: block;
-  padding: 8px 12px;
-  text-decoration: none;
-  color: black;
+.theme-doc-markdown details summary {
+  cursor: pointer;
 }
 
-.custom-search-results li a:hover {
-  background-color: #f0f0f0;
+/* Mermaid diagrams centred and responsive */
+.docusaurus-mermaid-container {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  margin: 1.5rem 0;
 }
 
+/* Generated topic index cards */
+.theme-doc-card-container .card,
+article .card {
+  border: 1px solid var(--ifm-toc-border-color);
+  box-shadow: none;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+article .card:hover {
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-2px);
+}
+
+/* Sidebar */
+.menu__link {
+  font-size: 0.93rem;
+}
+
+.menu__list-item-collapsible .menu__link--active {
+  font-weight: 600;
+}
+
+/* Footer */
+.footer {
+  border-top: 1px solid var(--ifm-toc-border-color);
+}
+
+/* No ligatures in code: `==`, `!=`, `->` must look exactly as typed */
+code,
+pre,
+kbd {
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0, 'calt' 0;
+}
+
+.theme-doc-markdown h2 {
+  font-size: 1.7rem;
+}
+
+.theme-doc-markdown > header + h2,
+.theme-doc-markdown > header + p + h2 {
+  border-top: 0;
+  margin-top: 1.5rem;
+  padding-top: 0;
+}

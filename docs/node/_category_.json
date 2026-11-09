@@ -1,0 +1,9 @@
+{
+  "label": "Node.js & Express",
+  "position": 7,
+  "link": {
+    "type": "generated-index",
+    "description": "Server-side JavaScript: modules, npm, Express routing, middleware and REST APIs.",
+    "slug": "/node"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "label": "System Design",
+  "position": 11,
+  "link": {
+    "type": "generated-index",
+    "description": "Scalability, caching, load balancing, databases at scale and how to approach a design interview.",
+    "slug": "/system-design"
+  }
+}

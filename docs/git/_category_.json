@@ -1,0 +1,9 @@
+{
+  "label": "Git & GitHub",
+  "position": 9,
+  "link": {
+    "type": "generated-index",
+    "description": "Everyday Git, branching, undoing mistakes and the GitHub pull-request workflow.",
+    "slug": "/git"
+  }
+}

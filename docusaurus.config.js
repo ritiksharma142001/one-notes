@@ -1,25 +1,59 @@
 // @ts-check
 import { themes as prismThemes } from 'prism-react-renderer';
 
+const GITHUB = 'https://github.com/ritiksharma142001/one-notes';
+const PORTFOLIO = 'https://eritik.vercel.app/';
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: '1-note',
-  tagline: 'Notes',
-  favicon: 'img/favicon.ico',
+  title: 'One Notes',
+  tagline:
+    'Engineering notes for revising fast — Java, Spring Boot, React, SQL, system design and interview prep in one place.',
+  favicon: 'img/favicon.svg',
 
-  url: 'https://es-notes.ritik.dev',
+  url: 'https://ritiksharma142001.github.io',
   baseUrl: '/one-notes/',
-
-  organizationName: 'ritiksharma142001', // ✅ your GitHub username
-  projectName: 'one-notes',              // ✅ your repo name
+  organizationName: 'ritiksharma142001',
+  projectName: 'one-notes',
   trailingSlash: true,
-  onBrokenLinks: 'ignore',
-  onBrokenMarkdownLinks: 'warn',
 
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en'],
+  onBrokenLinks: 'throw',
+  onBrokenAnchors: 'warn',
+
+  markdown: {
+    mermaid: true,
+    hooks: { onBrokenMarkdownLinks: 'throw' },
   },
+  themes: [
+    '@docusaurus/theme-mermaid',
+    [
+      '@easyops-cn/docusaurus-search-local',
+      /** @type {import('@easyops-cn/docusaurus-search-local').PluginOptions} */
+      ({
+        hashed: true,
+        indexBlog: false,
+        docsRouteBasePath: '/',
+        highlightSearchTermsOnTargetPage: true,
+        explicitSearchResultPath: true,
+        searchResultLimits: 10,
+        searchBarShortcutHint: true,
+      }),
+    ],
+  ],
+
+  i18n: { defaultLocale: 'en', locales: ['en'] },
+
+  headTags: [
+    { tagName: 'link', attributes: { rel: 'preconnect', href: 'https://fonts.googleapis.com' } },
+    { tagName: 'link', attributes: { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: 'anonymous' } },
+    {
+      tagName: 'link',
+      attributes: {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap',
+      },
+    },
+  ],
 
   presets: [
     [
@@ -29,107 +63,84 @@ const config = {
         docs: {
           sidebarPath: './sidebars.js',
           routeBasePath: '/',
-          editUrl: 'https://github.com/ritiksharma142001/one-notes/edit/main/',
+          editUrl: `${GITHUB}/edit/main/`,
+          showLastUpdateTime: true,
+          breadcrumbs: true,
         },
         blog: false,
-        theme: {
-          customCss: './src/css/custom.css',
-        },
+        theme: { customCss: './src/css/custom.css' },
+        sitemap: { changefreq: 'weekly', priority: 0.5 },
       }),
     ],
   ],
 
-  // ✅ Register the search theme here
-  // themes: ['@docusaurus/theme-search-algolia'],
-
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      algolia: {
-        apiKey: 'a3aaac97d1164b77b71bbaa3fa59e5f9',
-        indexName: 'ritiksharma142001io',
-        appId: 'SK5BV5M8DQ',
-        contextualSearch: true,
-      },
-      image: 'img/docusaurus-social-card.jpg',
+      image: 'img/og.png',
+      metadata: [
+        { name: 'keywords', content: 'java notes, spring boot, react, sql, system design, interview questions, ritik sharma' },
+        { name: 'author', content: 'Ritik Sharma' },
+      ],
+      colorMode: { respectPrefersColorScheme: true },
+      docs: { sidebar: { hideable: true, autoCollapseCategories: true } },
+      tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
       navbar: {
-        title: 'esNot',
-        logo: {
-          alt: 'esNot',
-          src: 'img/logo2.svg',
-        },
+        title: 'One Notes',
+        logo: { alt: 'One Notes', src: 'img/logo.svg' },
         items: [
-          {
-            href: '/about',
-            label: 'About Us',
-            position: 'right',
-          },
-          {
-            href: '/contact',
-            label: 'Contact',
-            position: 'right',
-          },
-          {
-            href: 'https://github.com/ritiksharma142001/one-notes',
-            label: 'GitHub',
-            position: 'right',
-          },
-          {
-            href: 'https://eritik.vercel.app/',
-            label: 'Portfolio',
-            position: 'right',
-          },
+          { type: 'docSidebar', sidebarId: 'notes', label: 'Notes', position: 'left' },
+          { to: '/interview/', label: 'Interview prep', position: 'left' },
+          { to: '/system-design/fundamentals/', label: 'System design', position: 'left' },
+          { href: PORTFOLIO, label: 'Portfolio', position: 'right' },
+          { href: GITHUB, position: 'right', className: 'header-github-link', 'aria-label': 'GitHub repository' },
         ],
       },
       footer: {
         style: 'dark',
         links: [
           {
-            title: 'Docs',
+            title: 'Backend',
             items: [
-              {
-                label: 'Tutorial',
-                to: 'https://ritiksharma142001.github.io/one-notes/',
-              },
+              { label: 'Core Java', to: '/core-java/' },
+              { label: 'Spring Boot', to: '/advanced-java/spring-boot/' },
+              { label: 'SQL', to: '/databases/sql/' },
+              { label: 'System design', to: '/system-design/fundamentals/' },
             ],
           },
           {
-            title: 'Community',
+            title: 'Frontend',
             items: [
-              {
-                label: 'Stack Overflow',
-                href: '#',
-              },
-              {
-                label: 'Discord',
-                href: '#',
-              },
-              {
-                label: 'X',
-                href: '#',
-              },
+              { label: 'JavaScript', to: '/javascript/' },
+              { label: 'React', to: '/react/' },
+              { label: 'HTML, CSS & Tailwind', to: '/web/' },
+            ],
+          },
+          {
+            title: 'Prepare',
+            items: [
+              { label: 'Java interview questions', to: '/interview/java-backend/' },
+              { label: 'Frontend interview questions', to: '/interview/frontend/' },
+              { label: 'CS fundamentals', to: '/cs-fundamentals/' },
             ],
           },
           {
             title: 'More',
             items: [
-              {
-                label: 'Portfolio',
-                to: 'https://eritik.vercel.app/',
-              },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/ritiksharma142001/one-notes',
-              },
+              { label: 'Portfolio', href: PORTFOLIO },
+              { label: 'GitHub', href: GITHUB },
+              { label: 'About & contact', to: '/about/' },
             ],
           },
         ],
-        copyright: `Copyright © 2024 - ${new Date().getFullYear()} Made by Ritik Sharma.`,
+        copyright: `© ${new Date().getFullYear()} Ritik Sharma · Free to read and share.`,
       },
       prism: {
         theme: prismThemes.github,
-        darkTheme: prismThemes.dracula,
+        darkTheme: prismThemes.vsDark,
+        additionalLanguages: ['java', 'bash', 'sql', 'http', 'properties', 'docker', 'ini'],
       },
+      mermaid: { theme: { light: 'neutral', dark: 'dark' } },
     }),
 };
 

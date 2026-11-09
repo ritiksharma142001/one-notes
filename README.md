@@ -1,294 +1,69 @@
-# 1-Note Documentation Website
+# One Notes
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+**Engineering notes for revising fast** — Core Java, Spring Boot, JPA, React, JavaScript, HTML/CSS/Tailwind, Node.js, SQL, PostgreSQL, MongoDB, Git, Linux, system design, OS/DBMS/networks and interview Q&A, in one searchable site.
 
----
+**Live:** https://ritiksharma142001.github.io/one-notes/
 
-# Prerequisites
+![One Notes](static/img/og.png)
 
-Before running the project, make sure you have:
+## What's inside
 
-- Node.js >= 18 installed
-- npm or yarn installed
-- Git installed
+| Section | Pages |
+|---|---|
+| Core Java | JVM, variables, methods, OOP (class, encapsulation, inheritance, polymorphism, abstraction), constructors, strings, exceptions, collections, multithreading, streams |
+| Advanced Java | JDBC, Servlets & JSP, Spring & Spring Boot, JPA & Hibernate |
+| JavaScript & React | Essentials, JSON/fetch/Axios, React fundamentals, hooks, routing & data fetching, performance |
+| Web | HTML, CSS, Tailwind CSS |
+| Node.js | Node & Express REST APIs |
+| Databases | SQL (MySQL), PostgreSQL, MongoDB |
+| Tools | Git & GitHub, Linux shell, Vim, keyboard shortcuts |
+| System design & CS | System design fundamentals, operating systems, DBMS, computer networks |
+| Interview prep | Java & Spring Q&A, frontend Q&A, question bank |
 
-Check versions:
+Every page is a cheat sheet: short explanations, runnable code, comparison tables, Mermaid diagrams and *interview quick answers*.
 
-```bash
-node -v
-npm -v
-git --version
-```
+## Features
 
-Recommended:
+- Offline-style full-text search (<kbd>Ctrl</kbd>+<kbd>K</kbd>) — no third-party service
+- Light/dark mode, mobile-friendly layout, collapsible sidebar
+- Mermaid diagrams, syntax highlighting for Java, SQL, Bash, HTTP and more
+- "Last updated" date and "Edit this page" link on every page
+- Build fails on broken links, so navigation never rots
+- Deployed automatically to GitHub Pages on every push to `main`
 
-- Node.js 20+
-- npm 10+
+## Run locally
 
----
-
-# Clone Repository
-
-Using SSH:
-
-```bash
-git clone git@github.com:ritiksharma142001/one-notes.git
-```
-
-Using HTTPS:
+Requires Node.js 18+ (20+ recommended).
 
 ```bash
 git clone https://github.com/ritiksharma142001/one-notes.git
-```
-
-Move into project:
-
-```bash
 cd one-notes
+npm ci
+npm start          # http://localhost:3000/one-notes/
+npm run build      # production build in ./build
+npm run serve      # preview the production build
 ```
 
----
+## Add a note
 
-# Installation
+1. Create a Markdown file in the right folder under `docs/`, e.g. `docs/databases/redis.md`.
+2. Add front matter:
 
-Using npm:
+   ```md
+   ---
+   title: Redis
+   sidebar_position: 4
+   description: One line that appears in search results and link previews.
+   ---
+   ```
 
-```bash
-npm install
-```
+3. Link to other notes with relative file paths (`../core-java/strings/strings.md`) so the build can verify them.
+4. New top-level section? Add a folder with a `_category_.json` (label, position, `link.slug`) and a card in `src/pages/index.js`.
 
-Using yarn:
+## Deploy
 
-```bash
-yarn
-```
+Pushing to `main` runs `.github/workflows/deploy.yml`, which builds the site and publishes it to GitHub Pages (repository **Settings → Pages → Source: GitHub Actions**).
 
----
+## Author
 
-# Local Development
-
-Using npm:
-
-```bash
-npm run start
-```
-
-Using yarn:
-
-```bash
-yarn start
-```
-
-This starts a local development server.
-
-Open:
-
-```txt
-http://localhost:3000
-```
-
-Features:
-
-- Hot reload
-- Live preview
-- Instant updates while editing docs
-
----
-
-# Build Production Website
-
-Using npm:
-
-```bash
-npm run build
-```
-
-Using yarn:
-
-```bash
-yarn build
-```
-
-This generates optimized static files inside:
-
-```txt
-build/
-```
-
----
-
-# Test Production Build Locally
-
-Using npm:
-
-```bash
-npm run serve
-```
-
-Using yarn:
-
-```bash
-yarn serve
-```
-
-This serves the production build locally.
-
----
-
-# Deployment
-
-## Deploy Using SSH (Recommended)
-
-Make sure:
-
-- SSH key is added to GitHub
-- Git remote uses SSH
-
-Check remote:
-
-```bash
-git remote -v
-```
-
-Expected:
-
-```txt
-origin  git@github.com:ritiksharma142001/one-notes.git
-```
-
-Deploy:
-
-Using npm:
-
-```bash
-USE_SSH=true npm run deploy
-```
-
-Using yarn:
-
-```bash
-USE_SSH=true yarn deploy
-```
-
----
-
-## Deploy Using HTTPS
-
-Using npm:
-
-```bash
-GIT_USER=ritiksharma142001 npm run deploy
-```
-
-Using yarn:
-
-```bash
-GIT_USER=ritiksharma142001 yarn deploy
-```
-
-You may need a GitHub Personal Access Token instead of password.
-
----
-
-# Custom Domain
-
-Website URL:
-
-```txt
-https://es-notes.ritik.dev
-```
-
-Recommended Docusaurus config:
-
-```js
-url: 'https://es-notes.ritik.dev',
-baseUrl: '/',
-```
-
----
-
-# Important Scripts
-
-| Command | Description |
-|---|---|
-| `npm run start` | Start development server |
-| `npm run build` | Build production website |
-| `npm run serve` | Serve production build locally |
-| `npm run deploy` | Deploy website |
-| `npm run clear` | Clear Docusaurus cache |
-| `npm run swizzle` | Customize theme components |
-| `npm run write-translations` | Generate translation files |
-| `npm run write-heading-ids` | Generate heading IDs |
-| `npm run build:search` | Build search index |
-
----
-
-# Troubleshooting
-
-## Clear Cache
-
-```bash
-npm run clear
-```
-
----
-
-## Reinstall Dependencies
-
-```bash
-rm -rf node_modules package-lock.json
-npm install
-```
-
----
-
-## Port Already In Use
-
-Run on another port:
-
-```bash
-npm run start -- --port 3001
-```
-
----
-
-# Project Structure
-
-```txt
-one-notes/
-├── docs/
-├── src/
-├── static/
-├── build/
-├── docusaurus.config.js
-├── sidebars.js
-├── package.json
-└── README.md
-```
-
----
-
-# Tech Stack
-
-- Docusaurus
-- React
-- MDX
-- Algolia Search
-- GitHub Pages
-- Custom Domain
-
----
-
-# License
-
-MIT License
-
----
-
-# Author
-
-Ritik Sharma
-
-- GitHub: https://github.com/ritiksharma142001
-- Portfolio: https://eritik.vercel.app/
-- Website: https://es-notes.ritik.dev
+[Ritik Sharma](https://eritik.vercel.app/) · sharma.ritik2023@gmail.com
