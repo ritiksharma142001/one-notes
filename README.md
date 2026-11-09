@@ -46,6 +46,8 @@ npm run serve      # preview the production build
 
 ## Add a note
 
+**Full guide with templates and formatting examples: [HOW-TO-ADD-NOTES.md](HOW-TO-ADD-NOTES.md)**
+
 1. Create a Markdown file in the right folder under `docs/`, e.g. `docs/databases/redis.md`.
 2. Add front matter:
 
