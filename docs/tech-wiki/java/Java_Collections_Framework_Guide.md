@@ -13,7 +13,7 @@ mdx:
 >
 > **Scope:** The whole `java.util` collections framework: the interface hierarchy, every major implementation and how it is built inside (arrays, linked nodes, hash tables, red-black trees, heaps, skip lists), concurrent collections, utility classes (`Collections`, `Arrays`), sorting and comparators, immutability, Big-O of everything, and a full competitive-programming toolkit (fast I/O, patterns, templates, TLE traps).
 >
-> **Related files:** [Java_Complete_Guide.md](Java_Complete_Guide.md) · [java-stream-api.md](java-stream-api.md) · [exception_handling/](exception_handling) · [02_Creational_Pattern.md](../design-patterns/01_LLD/02_Creational_Pattern.md) · [01_Scalability_Pattern.md](../design-patterns/03_System_Design/01_Scalability_Pattern.md)
+> **Related files:** [Java_Complete_Guide.md](Java_Complete_Guide.md) · [java-stream-api.md](java-stream-api.md) · [Exception handling](Java_Complete_Guide.md#7-exception-handling-interview-imp) · [02_Creational_Pattern.md](../design-patterns/01_LLD/02_Creational_Pattern.md) · [01_Scalability_Pattern.md](../design-patterns/03_System_Design/01_Scalability_Pattern.md)
 
 | Level | Chapters |
 |---|---|

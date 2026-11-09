@@ -7748,7 +7748,7 @@ Spring uses these constantly: beans are singletons, `BeanFactory` is a factory, 
 | **1 Foundations** | Ch 1-2: compile/run, types, operators, casting, Scanner | Calculator, grade calculator, temperature converter | [Java_Fundamentals_Deep_Dive.md](Java_Fundamentals_Deep_Dive.md) |
 | **2 Control & methods** | Ch 1.13, 13: methods, overloading, recursion | Prime/factorial/Fibonacci, number games | [Java_Complete_Guide.md](Java_Complete_Guide.md) ch 3-5 |
 | **3 OOP** | Ch 13-19 | Bank account, student management (console), library system | [01_LLD_Design_Patterns.md](../design-patterns/01_LLD/01_LLD_Design_Patterns.md) |
-| **4 Robustness** | Ch 3, 11 exceptions; Ch 14 Strings | Bank app with custom exceptions + input validation | [exception_handling/](exception_handling) |
+| **4 Robustness** | Ch 3, 11 exceptions; Ch 14 Strings | Bank app with custom exceptions + input validation | [Exception handling](Java_Complete_Guide.md#7-exception-handling-interview-imp) |
 | **5 Data structures** | Ch 5-8 collections, sorting, maps | Contact book, word counter, leaderboard | [Java_Collections_Framework_Guide.md](Java_Collections_Framework_Guide.md) |
 | **6 Concurrency** | Ch 4, 12 | Producer-consumer, parallel downloader, thread-safe counter | [Java_Complete_Guide.md](Java_Complete_Guide.md) ch 12 |
 | **7 Modern Java** | Ch 25 | Rewrite earlier projects with streams/records | [java-stream-api.md](java-stream-api.md) |

@@ -13,7 +13,7 @@ mdx:
 >
 > **Scope:** The whole language (Java 8 through 25 LTS), core APIs, collections, streams, concurrency (incl. virtual threads), JVM internals and tuning, build and test tooling, Spring Boot essentials, production concerns (resilience, observability, security), DSA, interview questions, projects and a learning path.
 >
-> **Related files:** [java-stream-api.md](java-stream-api.md) · [exception_handling/](exception_handling) · [02_Creational_Pattern.md](../design-patterns/01_LLD/02_Creational_Pattern.md) · [01_LLD_Design_Patterns.md](../design-patterns/01_LLD/01_LLD_Design_Patterns.md) · [01_Scalability_Pattern.md](../design-patterns/03_System_Design/01_Scalability_Pattern.md) · [AI_ML_Roadmap.md](../ai-ml/AI_ML_Roadmap.md)
+> **Related files:** [java-stream-api.md](java-stream-api.md) · [Exception handling](Java_Complete_Guide.md#7-exception-handling-interview-imp) · [02_Creational_Pattern.md](../design-patterns/01_LLD/02_Creational_Pattern.md) · [01_LLD_Design_Patterns.md](../design-patterns/01_LLD/01_LLD_Design_Patterns.md) · [01_Scalability_Pattern.md](../design-patterns/03_System_Design/01_Scalability_Pattern.md) · [AI_ML_Roadmap.md](../ai-ml/AI_ML_Roadmap.md)
 
 | Level | Chapters |
 |---|---|

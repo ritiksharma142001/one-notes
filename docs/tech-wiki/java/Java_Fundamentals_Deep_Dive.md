@@ -13,7 +13,7 @@ mdx:
 >
 > **Scope:** The foundations *before* OOP, explained in depth: how a computer understands code, what a program is, the SDLC, compilers vs interpreters, Java's features and architecture, what really happens on `javac Main.java` / `java Main`, JRE/JVM segments (memory areas), data types, type casting, operators, `Scanner` input, and methods. All code outputs here were verified on OpenJDK 17.
 >
-> **Related files:** [Java_Complete_Guide.md](Java_Complete_Guide.md) (whole language, OOP onward) · [Java_Collections_Framework_Guide.md](Java_Collections_Framework_Guide.md) · [java-stream-api.md](java-stream-api.md) · [exception_handling/](exception_handling) · [Cpp_Complete_Guide.md](../cpp/Cpp_Complete_Guide.md) (a compiled-to-native comparison)
+> **Related files:** [Java_Complete_Guide.md](Java_Complete_Guide.md) (whole language, OOP onward) · [Java_Collections_Framework_Guide.md](Java_Collections_Framework_Guide.md) · [java-stream-api.md](java-stream-api.md) · [Exception handling](Java_Complete_Guide.md#7-exception-handling-interview-imp) · [Cpp_Complete_Guide.md](../cpp/Cpp_Complete_Guide.md) (a compiled-to-native comparison)
 
 | Level | Chapters |
 |---|---|

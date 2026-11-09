@@ -81,7 +81,7 @@ flowchart TD
 
 ## 12.3 The Demo App (greeting-api)
 
-The full source lives in [examples/greeting-api](examples/greeting-api/): Maven project, Dockerfile and Kubernetes manifests. It is a small REST service built only to demonstrate this chapter.
+The full source lives in [examples/greeting-api](https://github.com/ritiksharma142001/one-notes/tree/main/docs/tech-wiki/kubernetes/examples/greeting-api): Maven project, Dockerfile and Kubernetes manifests. It is a small REST service built only to demonstrate this chapter.
 
 | Endpoint | Purpose |
 |---|---|
@@ -92,7 +92,7 @@ The full source lives in [examples/greeting-api](examples/greeting-api/): Maven 
 | `POST /admin/readiness?ready=false` | Flips Spring's readiness state by hand |
 | `GET /actuator/health/liveness`, `/readiness` | Probe endpoints from Spring Boot Actuator |
 
-Key dependencies ([pom.xml](examples/greeting-api/pom.xml)):
+Key dependencies ([pom.xml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/greeting-api/pom.xml)):
 ```xml
 <parent>
   <groupId>org.springframework.boot</groupId>
@@ -104,7 +104,7 @@ Key dependencies ([pom.xml](examples/greeting-api/pom.xml)):
 <artifactId>spring-boot-starter-actuator</artifactId> <!-- health endpoints -->
 ```
 
-The Kubernetes-relevant part of [application.yml](examples/greeting-api/src/main/resources/application.yml):
+The Kubernetes-relevant part of [application.yml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/greeting-api/src/main/resources/application.yml):
 ```yaml
 server:
   shutdown: graceful                       # on SIGTERM: refuse new requests, finish in-flight ones
@@ -157,7 +157,7 @@ The app's startup log (excerpt; timestamps and PID change on every run):
 
 **Why layers matter:** a fat jar is about 22 MB, but your own code is only a few KB of it. If the whole jar is one image layer, every code change re-uploads 22 MB. Spring Boot can split the jar into layers (dependencies, loader, snapshot dependencies, application) so only the small last layer changes. Docker basics are covered in [03_Dockerfile_and_Image_Building.md](../docker/03_Dockerfile_and_Image_Building.md#34-multi-stage-builds-interview-imp).
 
-[Dockerfile](examples/greeting-api/Dockerfile):
+[Dockerfile](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/greeting-api/Dockerfile):
 ```dockerfile
 # ---- stage 1: build the jar ----
 FROM maven:3.9-eclipse-temurin-17 AS build
@@ -476,7 +476,7 @@ Terminating due to java.lang.OutOfMemoryError: Java heap space
 
 The JVM exited itself (code 3) at about 384 MiB of heap, the kubelet restarted the container (`RESTARTS 1`), and `READY 0/1` shows it was out of the Service while the new JVM started. The other replica kept serving.
 
-**Case 2: the classic mistake.** [demos/oom-demo-pod.yaml](examples/greeting-api/demos/oom-demo-pod.yaml) (kept out of `k8s/` so `kubectl apply -f k8s/` never starts it) is the same image and the same 512Mi limit, but with `-XX:MaxRAMPercentage=100`:
+**Case 2: the classic mistake.** [demos/oom-demo-pod.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/greeting-api/demos/oom-demo-pod.yaml) (kept out of `k8s/` so `kubectl apply -f k8s/` never starts it) is the same image and the same 512Mi limit, but with `-XX:MaxRAMPercentage=100`:
 ```bash
 kubectl apply -f demos/oom-demo-pod.yaml
 # from a curl Pod: GET /jvm, then POST /leak?mb=40 up to 14 times
@@ -571,7 +571,7 @@ Output (identical on all 3 runs, apart from key order):
 The mounted file overrode the greeting from the jar, and the password was read from the file.
 
 ### The Kubernetes version
-[k8s/configmap.yaml](examples/greeting-api/k8s/configmap.yaml) and [k8s/secret.yaml](examples/greeting-api/k8s/secret.yaml):
+[k8s/configmap.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/greeting-api/k8s/configmap.yaml) and [k8s/secret.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/greeting-api/k8s/secret.yaml):
 ```yaml
 apiVersion: v1
 kind: ConfigMap
@@ -735,9 +735,9 @@ Output (`count http_code`; `000` = the connection failed):
 
 ## 12.9 Complete Manifests and Deploying on minikube
 
-All files: [examples/greeting-api/k8s/](examples/greeting-api/k8s/) (the app), [examples/greeting-api/demos/](examples/greeting-api/demos/) (OOM demo only). The Deployment ties everything above together:
+All files: [examples/greeting-api/k8s/](https://github.com/ritiksharma142001/one-notes/tree/main/docs/tech-wiki/kubernetes/examples/greeting-api/k8s) (the app), [examples/greeting-api/demos/](https://github.com/ritiksharma142001/one-notes/tree/main/docs/tech-wiki/kubernetes/examples/greeting-api/demos) (OOM demo only). The Deployment ties everything above together:
 
-[k8s/deployment.yaml](examples/greeting-api/k8s/deployment.yaml):
+[k8s/deployment.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/greeting-api/k8s/deployment.yaml):
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -806,7 +806,7 @@ spec:
         - name: tmp
           emptyDir: {}
 ```
-[k8s/service.yaml](examples/greeting-api/k8s/service.yaml):
+[k8s/service.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/greeting-api/k8s/service.yaml):
 ```yaml
 apiVersion: v1
 kind: Service

@@ -86,7 +86,7 @@ flowchart LR
 
 ## 5.4 NetworkPolicy (Pod Firewall)
 
-> **Verified** on minikube v1.38.1 (Kubernetes v1.35.1) with the **Calico** network plugin (`minikube start --cni=calico`). Each step ran **once**; manifests are in [examples/security-and-networkpolicy/](examples/security-and-networkpolicy/).
+> **Verified** on minikube v1.38.1 (Kubernetes v1.35.1) with the **Calico** network plugin (`minikube start --cni=calico`). Each step ran **once**; manifests are in [examples/security-and-networkpolicy/](https://github.com/ritiksharma142001/one-notes/tree/main/docs/tech-wiki/kubernetes/examples/security-and-networkpolicy).
 
 **What is it?** A firewall for Pods. A NetworkPolicy says which Pods may send traffic to (ingress) or from (egress) the Pods it selects.
 
@@ -102,7 +102,7 @@ flowchart LR
 **Types of selectors in `from`/`to`:** `podSelector` (Pods in the same namespace), `namespaceSelector` (all Pods in matching namespaces), both in the **same** list item (Pods with label X in namespaces with label Y), `ipBlock` (CIDR ranges, for traffic outside the cluster).
 
 ### Test bed
-[00-namespace-and-apps.yaml](examples/security-and-networkpolicy/00-namespace-and-apps.yaml): namespace `shop` with a `db` Pod (a tiny web server on port 5432) and its Service, an `api` Pod and an `other` Pod. Each test calls `db` by Service name and by Pod IP, to tell DNS problems apart from blocked TCP:
+[00-namespace-and-apps.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/security-and-networkpolicy/00-namespace-and-apps.yaml): namespace `shop` with a `db` Pod (a tiny web server on port 5432) and its Service, an `api` Pod and an `other` Pod. Each test calls `db` by Service name and by Pod IP, to tell DNS problems apart from blocked TCP:
 ```bash
 kubectl exec -n shop api   -- wget -qO- -T 3 http://db:5432
 kubectl exec -n shop api   -- wget -qO- -T 3 http://<db-pod-ip>:5432
@@ -118,7 +118,7 @@ other -> db (by Pod IP):       db-ok
 ```
 
 ### Step 1: the classic mistake (this guide's original example)
-Before verification, this section showed the YAML below. **It doesn't work**: [01-netpol-guide-original.yaml](examples/security-and-networkpolicy/01-netpol-guide-original.yaml)
+Before verification, this section showed the YAML below. **It doesn't work**: [01-netpol-guide-original.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/security-and-networkpolicy/01-netpol-guide-original.yaml)
 ```yaml
 # default deny ingress AND egress in the namespace, then allow only api -> db
 apiVersion: networking.k8s.io/v1
@@ -156,7 +156,7 @@ command terminated with exit code 1
 2. Egress to CoreDNS (port 53) is blocked too, so names don't resolve at all (`bad address`).
 
 ### Step 2: the fix: allow DNS and the api → db egress
-[02-netpol-fix-egress.yaml](examples/security-and-networkpolicy/02-netpol-fix-egress.yaml), added **on top of** step 1:
+[02-netpol-fix-egress.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/security-and-networkpolicy/02-netpol-fix-egress.yaml), added **on top of** step 1:
 ```yaml
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy

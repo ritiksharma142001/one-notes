@@ -27,7 +27,7 @@ mdx:
 >
 > | What | Status |
 > |---|---|
-> | Every manifest in [examples/pods-and-debugging/](examples/pods-and-debugging/) used here (01-08) | **Executed on minikube v1.38.1** (Kubernetes v1.35.1, QEMU driver, Docker runtime). Real output pasted. Each scenario ran **once** (the liveness scenario twice); they take minutes each on this small VM. All resources were deleted afterwards. |
+> | Every manifest in [examples/pods-and-debugging/](https://github.com/ritiksharma142001/one-notes/tree/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging) used here (01-08) | **Executed on minikube v1.38.1** (Kubernetes v1.35.1, QEMU driver, Docker runtime). Real output pasted. Each scenario ran **once** (the liveness scenario twice); they take minutes each on this small VM. All resources were deleted afterwards. |
 > | Native sidecar YAML (2.4), `fsGroup` (2.6) | **NOT executed**: shown for reference only. |
 >
 > Things that change between runs: Pod IPs, ages, timestamps, container IDs and UIDs in messages.
@@ -45,7 +45,7 @@ mdx:
 
 Pods are **ephemeral and replaceable**: when a Pod is recreated it gets a new name and a new IP. You rarely create bare Pods. Use a controller (Deployment, StatefulSet, Job; see [03_Workload_Controllers.md](03_Workload_Controllers.md)) that recreates them for you.
 
-[examples/pods-and-debugging/01-pod-basic.yaml](examples/pods-and-debugging/01-pod-basic.yaml) uses the Spring Boot demo image from [12_Spring_Boot_on_Kubernetes.md](12_Spring_Boot_on_Kubernetes.md):
+[examples/pods-and-debugging/01-pod-basic.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/01-pod-basic.yaml) uses the Spring Boot demo image from [12_Spring_Boot_on_Kubernetes.md](12_Spring_Boot_on_Kubernetes.md):
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -120,7 +120,7 @@ Container states: **Waiting** (with a reason such as `ContainerCreating`, `Image
 **Important:** the `STATUS` column of `kubectl get pods` is **not** the phase. It shows the most useful reason (a waiting/terminated reason if there is one, else the phase).
 
 ### Example: a Pod that succeeds and one that fails
-[02-lifecycle-succeeded-failed.yaml](examples/pods-and-debugging/02-lifecycle-succeeded-failed.yaml): two busybox Pods with `restartPolicy: Never`; one ends with `exit 0`, the other with `exit 1`.
+[02-lifecycle-succeeded-failed.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/02-lifecycle-succeeded-failed.yaml): two busybox Pods with `restartPolicy: Never`; one ends with `exit 0`, the other with `exit 1`.
 ```bash
 kubectl apply -f 02-lifecycle-succeeded-failed.yaml
 kubectl get pods -l demo=phases -w
@@ -203,7 +203,7 @@ Parameters: `initialDelaySeconds` (wait before the first check), `periodSeconds`
 **Time to act ≈ initialDelaySeconds + periodSeconds × failureThreshold.** For a startup probe this is the *maximum start time* you allow.
 
 ### Example 1: liveness failure → restart
-[03-liveness-exec.yaml](examples/pods-and-debugging/03-liveness-exec.yaml): the container creates `/tmp/healthy`, "hangs" after 20 s (deletes the file), and an `exec` probe checks the file every 5 s.
+[03-liveness-exec.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/03-liveness-exec.yaml): the container creates `/tmp/healthy`, "hangs" after 20 s (deletes the file), and an `exec` probe checks the file every 5 s.
 ```yaml
 command: ["sh", "-c", "touch /tmp/healthy; sleep 20; rm /tmp/healthy; sleep 600"]
 livenessProbe:
@@ -244,7 +244,7 @@ restarts=1 reason=Error exitCode=137 started=2026-10-31T21:52:51Z finished=2026-
 The container lived 65 s: 20 s healthy + about 15 s of failed probes + **the full 30 s grace period**. The `sh` running as PID 1 ignored SIGTERM, so the kubelet waited 30 s and then sent SIGKILL (exit code **137**). The same thing slows down every restart and every deployment of apps that don't handle SIGTERM. Fix: make PID 1 your real app with a SIGTERM handler (exec form `ENTRYPOINT`, see [09_Runtime_Limits_Logging_Health.md](../docker/09_Runtime_Limits_Logging_Health.md#94-pid-1-signals-and-graceful-shutdown-interview-imp)).
 
 ### Example 2: readiness failure → out of the Service, no restart
-[04-readiness-service.yaml](examples/pods-and-debugging/04-readiness-service.yaml): a `greeting-api` Pod behind a Service. Its readiness is switched off by hand (`POST /admin/readiness?ready=false`, see [12.5](12_Spring_Boot_on_Kubernetes.md#125-health-probes-with-actuator-interview-imp)).
+[04-readiness-service.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/04-readiness-service.yaml): a `greeting-api` Pod behind a Service. Its readiness is switched off by hand (`POST /admin/readiness?ready=false`, see [12.5](12_Spring_Boot_on_Kubernetes.md#125-health-probes-with-actuator-interview-imp)).
 ```bash
 kubectl apply -f 04-readiness-service.yaml
 kubectl get endpointslices -l kubernetes.io/service-name=ready-demo -o yaml | grep -A8 '^  endpoints:'
@@ -292,7 +292,7 @@ curl: (28) Connection timed out after 3002 milliseconds
 - After switching readiness back on, the Pod went back to `1/1` and `ready: true` within 5 s, with no restart.
 
 ### Example 3: probe timing that's too strict → CrashLoopBackOff
-[05-startup-too-short.yaml](examples/pods-and-debugging/05-startup-too-short.yaml): an app that needs about 30 s to start (5 s JVM + 25 s simulated warm-up), **no startupProbe**, and a liveness probe that gives up after `5 + 3 × 3 = 14 s`.
+[05-startup-too-short.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/05-startup-too-short.yaml): an app that needs about 30 s to start (5 s JVM + 25 s simulated warm-up), **no startupProbe**, and a liveness probe that gives up after `5 + 3 × 3 = 14 s`.
 ```yaml
 env:
   - { name: APP_STARTUP_DELAY_MS, value: "25000" }
@@ -371,7 +371,7 @@ initContainers:
 ```
 
 ### Example: init container waiting for a dependency
-[06-init-container.yaml](examples/pods-and-debugging/06-init-container.yaml):
+[06-init-container.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/06-init-container.yaml):
 ```yaml
 initContainers:
   - name: wait-db
@@ -444,7 +444,7 @@ Units: CPU `1` = 1 core, `500m` = 0.5 core ("m" = millicores); memory `128Mi`, `
 | **BestEffort** | No requests or limits at all | **First** |
 
 ### Example: the three classes
-[07-qos-classes.yaml](examples/pods-and-debugging/07-qos-classes.yaml):
+[07-qos-classes.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/07-qos-classes.yaml):
 ```yaml
 # qos-guaranteed
 resources:
@@ -502,7 +502,7 @@ containers:
 ```
 
 ### Example: `runAsNonRoot` blocks a root image
-[08-run-as-root-blocked.yaml](examples/pods-and-debugging/08-run-as-root-blocked.yaml) runs the official `nginx:1.27` image (which starts as root) with `runAsNonRoot: true`:
+[08-run-as-root-blocked.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/08-run-as-root-blocked.yaml) runs the official `nginx:1.27` image (which starts as root) with `runAsNonRoot: true`:
 ```bash
 kubectl apply -f 08-run-as-root-blocked.yaml
 kubectl get pod root-blocked

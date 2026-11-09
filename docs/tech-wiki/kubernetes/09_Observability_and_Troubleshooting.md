@@ -25,7 +25,7 @@ mdx:
 >
 > | What | Status |
 > |---|---|
-> | Scenarios 11-16 in [examples/pods-and-debugging/](examples/pods-and-debugging/), `kubectl debug`, DNS checks, `kubectl top` (metrics-server addon) | **Executed on minikube v1.38.1** (Kubernetes v1.35.1, QEMU driver, Docker runtime). Real output pasted. Each scenario ran **once**. All resources were deleted and the addon disabled afterwards. |
+> | Scenarios 11-16 in [examples/pods-and-debugging/](https://github.com/ritiksharma142001/one-notes/tree/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging), `kubectl debug`, DNS checks, `kubectl top` (metrics-server addon) | **Executed on minikube v1.38.1** (Kubernetes v1.35.1, QEMU driver, Docker runtime). Real output pasted. Each scenario ran **once**. All resources were deleted and the addon disabled afterwards. |
 > | Prometheus, Grafana, Loki, OpenTelemetry, Alertmanager (9.1), `kubectl debug node/...`, `journalctl -u kubelet`, Ingress errors, node NotReady, DNS outages | **NOT executed**: listed for reference. |
 >
 > Things that change between runs: Pod names and hashes, IPs, ages, counts like `(x5 over 97s)`, container IDs, UIDs.
@@ -133,7 +133,7 @@ kubectl rollout status deploy/<name> ; kubectl rollout undo deploy/<name>
 
 ## 9.3 Failure Scenarios Reproduced (Interview Imp)
 
-All five broken Pods (A-E) were applied at once from [examples/pods-and-debugging/](examples/pods-and-debugging/), together with the too-strict-probe Pod from [2.3](02_Pods.md#example-3-probe-timing-thats-too-strict--crashloopbackoff) started a minute earlier:
+All five broken Pods (A-E) were applied at once from [examples/pods-and-debugging/](https://github.com/ritiksharma142001/one-notes/tree/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging), together with the too-strict-probe Pod from [2.3](02_Pods.md#example-3-probe-timing-thats-too-strict--crashloopbackoff) started a minute earlier:
 ```bash
 kubectl apply -f 11-imagepullbackoff.yaml -f 12-crashloopbackoff.yaml -f 13-pending-insufficient.yaml \
               -f 14-createcontainerconfigerror.yaml -f 15-service-selector-mismatch.yaml
@@ -152,7 +152,7 @@ web2              1/1     Running                      0             94s
 One screen, almost every classic failure. Note `crasher` shows `Error` here, not `CrashLoopBackOff`: at that instant it had just exited again; the STATUS flips between `Error`, `CrashLoopBackOff` and briefly `Running` as it loops. Look at `RESTARTS` growing, not one snapshot.
 
 ### A. ImagePullBackOff
-[11-imagepullbackoff.yaml](examples/pods-and-debugging/11-imagepullbackoff.yaml): `image: greeting-api:9.9.9` (never built).
+[11-imagepullbackoff.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/11-imagepullbackoff.yaml): `image: greeting-api:9.9.9` (never built).
 ```bash
 kubectl describe pod bad-image | sed -n '/^Events:/,$p'
 ```
@@ -172,7 +172,7 @@ Events:
 - A short name like `greeting-api` means `docker.io/library/greeting-api`. "Repository does not exist **or may require 'docker login'**" is the same message for a typo and for a private image without credentials. Check the spelling first, then `imagePullSecrets`.
 
 ### B. CrashLoopBackOff
-[12-crashloopbackoff.yaml](examples/pods-and-debugging/12-crashloopbackoff.yaml): the app prints an error and exits 1.
+[12-crashloopbackoff.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/12-crashloopbackoff.yaml): the app prints an error and exits 1.
 ```bash
 kubectl describe pod crasher | sed -n '/    State:/,/Restart Count/p'
 kubectl describe pod crasher | sed -n '/^Events:/,$p'
@@ -213,7 +213,7 @@ ERROR: DATABASE_URL is not set
 - **Surprise:** `logs --previous` failed 3 times in a row on this minikube (Docker runtime via cri-dockerd). Plain `kubectl logs` worked because the *current* attempt had also already exited, so it showed the same output. On other clusters `--previous` normally works; if it doesn't, try plain `logs` right after a crash, or use your central log store.
 
 ### C. Pending: not enough memory on any node
-[13-pending-insufficient.yaml](examples/pods-and-debugging/13-pending-insufficient.yaml): requests `memory: 10Gi` on a node with about 2.4 GiB allocatable.
+[13-pending-insufficient.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/13-pending-insufficient.yaml): requests `memory: 10Gi` on a node with about 2.4 GiB allocatable.
 ```bash
 kubectl describe pod too-big | sed -n '/^Events:/,$p'
 ```
@@ -229,7 +229,7 @@ Events:
 - "Preemption is not helpful": even evicting lower-priority Pods wouldn't free 10 Gi. See [7.1](07_Scheduling_and_Resources.md#71-how-the-scheduler-decides) for how the scheduler decides.
 
 ### D. CreateContainerConfigError
-[14-createcontainerconfigerror.yaml](examples/pods-and-debugging/14-createcontainerconfigerror.yaml): an env var from Secret `db-credentials`, which doesn't exist.
+[14-createcontainerconfigerror.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/14-createcontainerconfigerror.yaml): an env var from Secret `db-credentials`, which doesn't exist.
 ```bash
 kubectl describe pod missing-secret | sed -n '/^Events:/,$p'
 ```
@@ -245,7 +245,7 @@ Events:
 The kubelet keeps retrying (`x9`). As soon as the Secret is created, the Pod starts by itself; no restart needed. The same status appears when `runAsNonRoot` meets a root image ([2.6](02_Pods.md#26-pod-security-context)).
 
 ### E. Service with no endpoints (selector typo)
-[15-service-selector-mismatch.yaml](examples/pods-and-debugging/15-service-selector-mismatch.yaml): Pod label `app: web`, Service selector `app: webb`.
+[15-service-selector-mismatch.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/15-service-selector-mismatch.yaml): Pod label `app: web`, Service selector `app: webb`.
 ```bash
 kubectl get svc web-svc
 kubectl get endpointslices -l kubernetes.io/service-name=web-svc
@@ -284,7 +284,7 @@ hello
 - (`kubectl run -i` printed `(curl exit 28)` before curl's own error line: stdout and stderr arrive separately.)
 
 ### F. Rollout stuck on a bad image
-[16-rollout-stuck.yaml](examples/pods-and-debugging/16-rollout-stuck.yaml): a working 2-replica Deployment with `maxUnavailable: 0` and `progressDeadlineSeconds: 60`, then updated to an image that doesn't exist.
+[16-rollout-stuck.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/pods-and-debugging/16-rollout-stuck.yaml): a working 2-replica Deployment with `maxUnavailable: 0` and `progressDeadlineSeconds: 60`, then updated to an image that doesn't exist.
 ```bash
 kubectl apply -f 16-rollout-stuck.yaml && kubectl rollout status deployment/shop
 kubectl set image deployment/shop app=busybox:9.9.9

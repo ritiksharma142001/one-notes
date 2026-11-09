@@ -25,7 +25,7 @@ mdx:
 >
 > | What | Status |
 > |---|---|
-> | RBAC (8.2: Role, RoleBinding, ClusterRole `view`, `kubectl auth can-i`, a real ServiceAccount token, `automountServiceAccountToken`) and Pod Security Admission (8.3) with the manifests in [examples/security-and-networkpolicy/](examples/security-and-networkpolicy/) | **Executed on minikube v1.38.1** (Kubernetes v1.35.1, QEMU driver, Calico CNI, separate `netpol` profile). Real output pasted. Each scenario ran **once**; all resources and the profile were deleted afterwards. |
+> | RBAC (8.2: Role, RoleBinding, ClusterRole `view`, `kubectl auth can-i`, a real ServiceAccount token, `automountServiceAccountToken`) and Pod Security Admission (8.3) with the manifests in [examples/security-and-networkpolicy/](https://github.com/ritiksharma142001/one-notes/tree/main/docs/tech-wiki/kubernetes/examples/security-and-networkpolicy) | **Executed on minikube v1.38.1** (Kubernetes v1.35.1, QEMU driver, Calico CNI, separate `netpol` profile). Real output pasted. Each scenario ran **once**; all resources and the profile were deleted afterwards. |
 > | OIDC login, audit logging, Kyverno/Gatekeeper/ValidatingAdmissionPolicy, everything in the 8.4 checklist | **NOT executed**: described for reference. |
 >
 > Things that change between runs: UIDs, token IDs (`JTI=...`), ages.
@@ -73,7 +73,7 @@ flowchart LR
 | **ServiceAccount** | One namespace | Identity for Pods and automation |
 
 ### Example 1: a Role that can only read Pods
-[10-rbac-pod-reader.yaml](examples/security-and-networkpolicy/10-rbac-pod-reader.yaml):
+[10-rbac-pod-reader.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/security-and-networkpolicy/10-rbac-pod-reader.yaml):
 ```yaml
 apiVersion: v1
 kind: ServiceAccount
@@ -179,7 +179,7 @@ Error from server (Forbidden): pods is forbidden: User "system:serviceaccount:sh
 
 ### Example 3: reuse a ClusterRole in one namespace
 Built-in ClusterRoles (`view`, `edit`, `admin`, `cluster-admin`) save you writing rules. Binding one with a **RoleBinding** limits it to that namespace.
-[11-rbac-clusterrole-view.yaml](examples/security-and-networkpolicy/11-rbac-clusterrole-view.yaml):
+[11-rbac-clusterrole-view.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/security-and-networkpolicy/11-rbac-clusterrole-view.yaml):
 ```yaml
 kind: RoleBinding
 metadata: { name: auditor-view, namespace: shop }
@@ -254,7 +254,7 @@ token
 **Modes** (one label each, can be combined): `enforce` (reject the Pod), `warn` (accept, but print a warning to the user), `audit` (accept, but record it in the audit log).
 
 ### Example: a namespace that enforces `restricted`
-[20-pod-security-restricted.yaml](examples/security-and-networkpolicy/20-pod-security-restricted.yaml), [21-pod-insecure.yaml](examples/security-and-networkpolicy/21-pod-insecure.yaml) (plain busybox Pod), [22-pod-restricted-ok.yaml](examples/security-and-networkpolicy/22-pod-restricted-ok.yaml) (hardened):
+[20-pod-security-restricted.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/security-and-networkpolicy/20-pod-security-restricted.yaml), [21-pod-insecure.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/security-and-networkpolicy/21-pod-insecure.yaml) (plain busybox Pod), [22-pod-restricted-ok.yaml](https://github.com/ritiksharma142001/one-notes/blob/main/docs/tech-wiki/kubernetes/examples/security-and-networkpolicy/22-pod-restricted-ok.yaml) (hardened):
 ```yaml
 apiVersion: v1
 kind: Namespace
