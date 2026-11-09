@@ -1,0 +1,30 @@
+app:
+  greeting: "Hello from application.yml (default)"
+  db-password: ""            # real value comes from a Secret (env APP_DB_PASSWORD)
+  startup-delay-ms: 0
+
+server:
+  port: 8080
+  shutdown: graceful         # on SIGTERM: stop taking new requests, finish in-flight ones
+
+spring:
+  application:
+    name: greeting-api
+  lifecycle:
+    timeout-per-shutdown-phase: 20s   # max wait for in-flight requests; keep below terminationGracePeriodSeconds
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true        # adds /actuator/health/liveness and /readiness (auto-on inside Kubernetes)
+      show-details: always   # demo only, so output shows the components
+  health:
+    livenessstate:
+      enabled: true
+    readinessstate:
+      enabled: true

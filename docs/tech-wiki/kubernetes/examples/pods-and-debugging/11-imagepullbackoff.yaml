@@ -1,0 +1,8 @@
+# 9.2 ImagePullBackOff: a tag that does not exist anywhere.
+apiVersion: v1
+kind: Pod
+metadata: { name: bad-image }
+spec:
+  containers:
+    - name: app
+      image: greeting-api:9.9.9          # never built; Docker Hub has no such image either

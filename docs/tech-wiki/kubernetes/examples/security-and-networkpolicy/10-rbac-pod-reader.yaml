@@ -1,0 +1,19 @@
+# 8.2 RBAC example: ServiceAccount "app" may only read Pods and their logs in namespace "shop".
+apiVersion: v1
+kind: ServiceAccount
+metadata: { name: app, namespace: shop }
+automountServiceAccountToken: false          # disable if the Pod doesn't call the API
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role                                    # namespaced (ClusterRole = cluster-wide)
+metadata: { name: pod-reader, namespace: shop }
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "pods/log"]
+    verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding                             # grants the Role to subjects (ClusterRoleBinding = cluster-wide)
+metadata: { name: app-reads-pods, namespace: shop }
+subjects: [{ kind: ServiceAccount, name: app, namespace: shop }]
+roleRef: { kind: Role, name: pod-reader, apiGroup: rbac.authorization.k8s.io }

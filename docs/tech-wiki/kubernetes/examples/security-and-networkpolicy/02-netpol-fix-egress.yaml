@@ -1,0 +1,24 @@
+# Fix for 01: allow DNS for every Pod in the namespace, and allow api -> db egress.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: { name: allow-dns, namespace: shop }
+spec:
+  podSelector: {}                      # all Pods in "shop"
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: kube-system } }
+          podSelector: { matchLabels: { k8s-app: kube-dns } }
+      ports:
+        - { port: 53, protocol: UDP }
+        - { port: 53, protocol: TCP }
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: { name: api-to-db, namespace: shop }
+spec:
+  podSelector: { matchLabels: { app: api } }
+  policyTypes: [Egress]
+  egress:
+    - to: [{ podSelector: { matchLabels: { app: db } } }]
+      ports: [{ port: 5432 }]

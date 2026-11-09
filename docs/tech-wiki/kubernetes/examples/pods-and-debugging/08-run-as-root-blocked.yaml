@@ -1,0 +1,10 @@
+# 2.6 runAsNonRoot with an image that runs as root -> the kubelet refuses to start it.
+apiVersion: v1
+kind: Pod
+metadata: { name: root-blocked }
+spec:
+  securityContext:
+    runAsNonRoot: true
+  containers:
+    - name: web
+      image: nginx:1.27            # official nginx starts as root (uid 0)

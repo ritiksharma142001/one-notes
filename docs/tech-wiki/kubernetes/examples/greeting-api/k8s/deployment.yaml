@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeting-api
+  labels: { app: greeting-api }
+spec:
+  replicas: 2
+  selector:
+    matchLabels: { app: greeting-api }
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0          # never drop below 2 Ready Pods during a rollout
+      maxSurge: 1                # add one new Pod at a time
+  template:
+    metadata:
+      labels: { app: greeting-api }
+    spec:
+      terminationGracePeriodSeconds: 45     # > preStop (10 s) + Spring shutdown timeout (20 s) + margin
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        seccompProfile: { type: RuntimeDefault }
+      containers:
+        - name: app
+          image: greeting-api:1.0.0
+          imagePullPolicy: IfNotPresent      # image is loaded into minikube, not pulled from a registry
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: JAVA_TOOL_OPTIONS        # heap = 75% of the memory limit; exit (so K8s restarts) on OOM
+              value: "-XX:MaxRAMPercentage=75 -XX:+ExitOnOutOfMemoryError"
+          resources:
+            requests: { cpu: 250m, memory: 512Mi }
+            limits:   { memory: 512Mi }      # memory limit = request; no CPU limit (avoids throttling)
+          startupProbe:                      # gives a slow JVM up to 30 x 2 s = 60 s to start
+            httpGet: { path: /actuator/health/liveness, port: http }
+            periodSeconds: 2
+            failureThreshold: 30
+          livenessProbe:                     # "is the process stuck?" -> restart. Never checks the DB.
+            httpGet: { path: /actuator/health/liveness, port: http }
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:                    # "can it take traffic now?" -> add/remove from the Service
+            httpGet: { path: /actuator/health/readiness, port: http }
+            periodSeconds: 5
+            failureThreshold: 2
+          lifecycle:
+            preStop:
+              sleep: { seconds: 10 }         # keep serving while the Pod is removed from Service endpoints
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: ["ALL"] }
+          volumeMounts:
+            - { name: config,  mountPath: /app/config, readOnly: true }
+            - { name: secrets, mountPath: /etc/secrets, readOnly: true }
+            - { name: tmp,     mountPath: /tmp }           # Tomcat needs a writable temp dir
+      volumes:
+        - name: config
+          configMap: { name: greeting-config }
+        - name: secrets
+          secret: { secretName: greeting-secret }
+        - name: tmp
+          emptyDir: {}

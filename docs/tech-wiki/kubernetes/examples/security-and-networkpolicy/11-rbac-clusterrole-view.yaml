@@ -1,0 +1,10 @@
+# 8.2 Reusing a built-in ClusterRole ("view") inside ONE namespace via a RoleBinding.
+apiVersion: v1
+kind: ServiceAccount
+metadata: { name: auditor, namespace: shop }
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: { name: auditor-view, namespace: shop }
+subjects: [{ kind: ServiceAccount, name: auditor, namespace: shop }]
+roleRef: { kind: ClusterRole, name: view, apiGroup: rbac.authorization.k8s.io }

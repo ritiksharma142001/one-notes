@@ -1,0 +1,16 @@
+# Non-secret settings. Mounted as /app/config/application.yml, which Spring Boot
+# loads automatically (./config/ next to the working directory) and which
+# overrides the application.yml packed inside the jar.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: greeting-config
+  labels: { app: greeting-api }
+data:
+  application.yml: |
+    app:
+      greeting: "Hello from the greeting-config ConfigMap"
+      startup-delay-ms: 3000          # demo: imitate a slow JVM start
+    spring:
+      config:
+        import: "optional:configtree:/etc/secrets/"   # each file in /etc/secrets becomes a property

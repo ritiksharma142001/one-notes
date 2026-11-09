@@ -1,0 +1,9 @@
+# 8.3 Pod Security Admission: a namespace that enforces the "restricted" standard,
+# and two Pods: one that breaks the rules and one that follows them.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: secure
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/warn: restricted

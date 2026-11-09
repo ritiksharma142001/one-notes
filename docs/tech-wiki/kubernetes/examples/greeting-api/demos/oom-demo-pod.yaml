@@ -1,0 +1,23 @@
+# DEMO ONLY: the classic mistake. Heap may grow to 100% of the memory limit,
+# so heap + non-heap memory exceeds the limit and the kernel kills the container
+# (OOMKilled, exit code 137) before Java ever throws OutOfMemoryError.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: oom-demo
+  labels: { app: oom-demo }
+spec:
+  restartPolicy: Never
+  containers:
+    - name: app
+      image: greeting-api:1.0.0
+      imagePullPolicy: IfNotPresent
+      env:
+        - name: JAVA_TOOL_OPTIONS
+          value: "-XX:MaxRAMPercentage=100 -XX:+ExitOnOutOfMemoryError"   # WRONG on purpose
+      resources:
+        requests: { cpu: 250m, memory: 512Mi }
+        limits:   { memory: 512Mi }
+      readinessProbe:
+        httpGet: { path: /actuator/health/readiness, port: 8080 }
+        periodSeconds: 2
