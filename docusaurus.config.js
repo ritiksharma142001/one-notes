@@ -92,6 +92,7 @@ const config = {
           { type: 'docSidebar', sidebarId: 'notes', label: 'Notes', position: 'left' },
           { to: '/interview/', label: 'Interview prep', position: 'left' },
           { to: '/system-design/fundamentals/', label: 'System design', position: 'left' },
+          { to: '/tech-wiki/', label: 'Tech Wiki', position: 'left' },
           { href: PORTFOLIO, label: 'Portfolio', position: 'right' },
           { href: GITHUB, position: 'right', className: 'header-github-link', 'aria-label': 'GitHub repository' },
         ],
@@ -125,6 +126,17 @@ const config = {
             ],
           },
           {
+            title: 'Deep dives',
+            items: [
+              { label: 'Tech Wiki home', to: '/tech-wiki/' },
+              { label: 'Java complete guide', to: '/tech-wiki/java/Java_Complete_Guide/' },
+              { label: 'Spring Boot topics', to: '/tech-wiki/spring/Spring_Boot_Topics_Guide/' },
+              { label: 'Design patterns', to: '/tech-wiki/design-patterns/Design_Patterns_Complete_List/' },
+              { label: 'Docker', to: '/tech-wiki/docker/Docker_Index/' },
+              { label: 'Kubernetes', to: '/tech-wiki/kubernetes/Kubernetes_Index/' },
+            ],
+          },
+          {
             title: 'More',
             items: [
               { label: 'Portfolio', href: PORTFOLIO },
@@ -133,7 +145,7 @@ const config = {
             ],
           },
         ],
-        copyright: `© ${new Date().getFullYear()} Ritik Sharma · Free to read and share.`,
+        copyright: `© ${new Date().getFullYear()} Ritik Sharma · One Notes · Free to read and share.`,
       },
       prism: {
         theme: prismThemes.github,

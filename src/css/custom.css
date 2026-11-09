@@ -204,3 +204,164 @@ kbd {
   margin-top: 1.5rem;
   padding-top: 0;
 }
+
+/* =====================================================================
+   Layout polish: no dead gaps between sidebar, content and TOC
+   ===================================================================== */
+
+/* Let the doc column use the full width between sidebar and TOC */
+@media (min-width: 997px) {
+  main[class*='docMainContainer'] > .container {
+    max-width: 100% !important;
+    padding-left: 2.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* One continuous surface: sidebar blends in, only a hairline divides it */
+.theme-doc-sidebar-container {
+  border-right: 1px solid var(--ifm-toc-border-color) !important;
+  background: var(--ifm-background-color);
+}
+
+.theme-doc-sidebar-menu {
+  padding: 0.75rem 0.5rem 2rem;
+}
+
+.menu__link {
+  border-radius: 8px;
+  padding: 0.38rem 0.75rem;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.menu__link--active:not(.menu__link--sublist) {
+  background: color-mix(in srgb, var(--ifm-color-primary) 14%, transparent);
+  font-weight: 600;
+}
+
+.menu__list .menu__list {
+  margin-left: 0.6rem;
+  padding-left: 0.4rem;
+  border-left: 1px solid var(--ifm-toc-border-color);
+}
+
+/* Table of contents: compact, labelled, clear active state */
+.theme-doc-toc-desktop {
+  padding-top: 0.5rem;
+}
+
+.theme-doc-toc-desktop::before {
+  content: 'On this page';
+  display: block;
+  margin: 0 0 0.5rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.theme-doc-toc-desktop .table-of-contents {
+  border-left: 1px solid var(--ifm-toc-border-color);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  padding: 0 0 0 0.25rem;
+}
+
+.table-of-contents ul {
+  padding-left: 0.75rem;
+}
+
+.table-of-contents li {
+  margin: 0.1rem 0;
+}
+
+.table-of-contents__link {
+  display: block;
+  padding: 0.22rem 0.5rem;
+  border-radius: 6px;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.table-of-contents__link:hover {
+  color: var(--ifm-color-primary);
+  background: color-mix(in srgb, var(--ifm-color-primary) 7%, transparent);
+  text-decoration: none;
+}
+
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  background: color-mix(in srgb, var(--ifm-color-primary) 11%, transparent);
+}
+
+/* Thin, quiet scrollbars for sidebar / TOC / code */
+.theme-doc-sidebar-container *,
+.theme-doc-toc-desktop,
+pre {
+  scrollbar-width: thin;
+  scrollbar-color: var(--ifm-color-emphasis-300) transparent;
+}
+
+/* Code blocks and diagrams sit flush with the text column */
+.theme-doc-markdown .theme-code-block,
+.theme-doc-markdown .docusaurus-mermaid-container {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* =====================================================================
+   Footer
+   ===================================================================== */
+.footer {
+  padding: 3.5rem 2rem 2rem;
+}
+
+.footer .container {
+  max-width: 1280px;
+}
+
+.footer__title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9aa3b8;
+  margin-bottom: 0.9rem;
+}
+
+.footer__item {
+  padding: 0.2rem 0;
+}
+
+.footer__link-item {
+  font-size: 0.92rem;
+  color: #c9cfdd;
+  transition: color 0.12s ease;
+}
+
+.footer__link-item:hover {
+  color: #a0a6ff;
+  text-decoration: none;
+}
+
+.footer__link-item svg {
+  opacity: 0.6;
+}
+
+.footer__bottom {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer__copyright {
+  font-size: 0.85rem;
+  color: #8b93a7;
+}
+
+@media (max-width: 996px) {
+  .footer__col {
+    margin-bottom: 1.5rem;
+  }
+}
