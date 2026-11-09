@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # 2. Pods: The Basic Unit (Interview Imp)

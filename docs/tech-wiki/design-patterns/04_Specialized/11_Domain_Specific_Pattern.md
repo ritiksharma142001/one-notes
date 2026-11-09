@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Domain-Specific Patterns (E-commerce, Payments, Booking, Trading, Social, Search, Recommendations, Money, Geo, Time Zones, i18n, Healthcare)

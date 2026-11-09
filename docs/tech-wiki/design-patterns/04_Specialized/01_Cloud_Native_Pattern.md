@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Cloud-Native Patterns

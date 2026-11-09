@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # LLD Interview Problems (Machine Coding: Parking Lot, Elevator, Splitwise, Movie Booking, Vending Machine, LRU Cache, Games)

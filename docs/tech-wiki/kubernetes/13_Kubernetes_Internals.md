@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # 13. Kubernetes Internals

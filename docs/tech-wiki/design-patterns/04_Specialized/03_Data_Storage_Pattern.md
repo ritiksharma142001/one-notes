@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Data Storage Patterns (Data Patterns - Extended)

@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # 12. Running Spring Boot Apps on Kubernetes (Interview Imp)

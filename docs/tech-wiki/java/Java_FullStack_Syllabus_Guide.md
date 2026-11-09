@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Java Full Stack Syllabus Guide: From "What is Java?" to Spring Boot, JWT and Docker

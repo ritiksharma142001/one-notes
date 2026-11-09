@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Java Practice Curriculum Guide: From First Program to Number, Array and String Problems

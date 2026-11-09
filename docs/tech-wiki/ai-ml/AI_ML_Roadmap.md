@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # AI / ML Roadmap - Beginner to Advanced (2026 → 2036)

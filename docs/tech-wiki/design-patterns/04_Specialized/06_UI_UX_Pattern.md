@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # UI/UX Architecture Patterns (State Flow, Components, Rendering, Layout, Micro-Frontends)

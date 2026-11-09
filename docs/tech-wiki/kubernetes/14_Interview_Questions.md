@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # 14. Kubernetes Interview Questions (Basic to Advanced)

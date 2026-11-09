@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # 7. Scheduling and Resource Management (Interview Imp)

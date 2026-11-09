@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Low-Level Design (LLD) Patterns - Complete Guide

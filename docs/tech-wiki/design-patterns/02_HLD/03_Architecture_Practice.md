@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Architecture Practice (Quality Attributes, Trade-Offs, ADRs, C4 and UML Diagrams, Technical Debt, Fitness Functions)

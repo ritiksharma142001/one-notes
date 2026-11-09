@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Docker Complete Guide - Index (Basic to Advanced)

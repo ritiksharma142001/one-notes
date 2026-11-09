@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # AI/ML System Design Patterns (Serving, Experimentation, Features, Registry, Monitoring, Learning Strategies)

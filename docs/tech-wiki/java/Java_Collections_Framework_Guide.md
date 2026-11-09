@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Java Collections Framework - Basic to Advanced (with Internals and Competitive Programming)

@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # 3. Building Images: Dockerfile (Interview Imp)

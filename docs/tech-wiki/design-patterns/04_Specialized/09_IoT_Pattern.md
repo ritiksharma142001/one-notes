@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # IoT Patterns (Gateway, Protocol Translation, Telemetry, Shadow/Twin, Commands, Edge/Fog)

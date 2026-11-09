@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Client-Server Web Architecture - Apache, Nginx, Tomcat and the Whole Request Journey (Architect's Guide)

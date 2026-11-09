@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # DevOps Complete Guide - Basic to Advanced

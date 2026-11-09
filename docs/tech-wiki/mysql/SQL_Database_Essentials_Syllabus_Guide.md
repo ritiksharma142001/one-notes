@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # SQL and Database Essentials Syllabus Guide (MySQL and Oracle): From "What is Data?" to Triggers and Normalization

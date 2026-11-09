@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Game Development Patterns (Loop, ECS, Buffers, Pools, Spatial Index, Locator, AI, Steering)

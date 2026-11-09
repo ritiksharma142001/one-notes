@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Java Fundamentals Deep Dive - From Binary to Methods

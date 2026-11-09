@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Blockchain & Distributed Ledger Patterns (Consensus, Merkle Trees, Smart Contracts, Oracles, Multi-Sig, Channels)

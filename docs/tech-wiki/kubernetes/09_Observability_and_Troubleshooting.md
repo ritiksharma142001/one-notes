@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # 9. Observability and Troubleshooting (Interview Imp)

@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Oracle SQL and PL/SQL Complete Guide - Basic to Advanced (every query type, with example tables)

@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Java Handwritten Notes (Typed Up)
@@ -7752,7 +7753,7 @@ Spring uses these constantly: beans are singletons, `BeanFactory` is a factory, 
 | **6 Concurrency** | Ch 4, 12 | Producer-consumer, parallel downloader, thread-safe counter | [Java_Complete_Guide.md](Java_Complete_Guide.md) ch 12 |
 | **7 Modern Java** | Ch 25 | Rewrite earlier projects with streams/records | [java-stream-api.md](java-stream-api.md) |
 | **8 Databases** | Ch 9-10, 20 | JDBC CRUD, then Hibernate CRUD | [MySQL_Complete_Guide.md](../mysql/MySQL_Complete_Guide.md) |
-| **9 Spring** | Ch 21-23 | Student Management + Login (with BCrypt) | [spring-springboot-topics.md](../pdf/java/spring-springboot-topics.md) |
+| **9 Spring** | Ch 21-23 | Student Management + Login (with BCrypt) | [spring-springboot-topics.md](../spring/Spring_Boot_Topics_Guide.md) |
 | **10 Production** | Ch 26-27 + testing (JUnit/Mockito), logging, Docker | Dockerize the Spring app, add REST + tests | [00_Docker_Index.md](../docker/00_Docker_Index.md), [Client_Server_Web_Architecture_Guide.md](../web-architecture/Client_Server_Web_Architecture_Guide.md) |
 
 ## 29.2 One-page cheat sheet

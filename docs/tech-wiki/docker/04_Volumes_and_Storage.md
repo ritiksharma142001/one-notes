@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # 4. Data: Volumes, Bind Mounts and Storage

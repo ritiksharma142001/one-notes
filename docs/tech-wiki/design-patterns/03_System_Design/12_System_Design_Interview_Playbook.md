@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # System Design Interview Playbook (Method, Estimation, and Case Studies: URL Shortener, Rate Limiter, Chat, Notifications, Video Streaming, Key-Value Store)

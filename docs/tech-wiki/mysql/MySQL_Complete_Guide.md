@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # MySQL Complete Guide - Basic to Advanced (every query type, with example tables)

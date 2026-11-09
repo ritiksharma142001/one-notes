@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Complete Design Patterns List (LLD, HLD & System Design)

@@ -1,5 +1,6 @@
 ---
-format: md
+mdx:
+  format: md
 ---
 
 # Design Principles and Anti-Patterns (SOLID, DRY/KISS/YAGNI, Coupling and Cohesion, GRASP, Code Smells, Refactoring)
