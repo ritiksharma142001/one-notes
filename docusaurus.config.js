@@ -63,7 +63,8 @@ const config = {
         docs: {
           sidebarPath: './sidebars.js',
           routeBasePath: '/',
-          editUrl: `${GITHUB}/edit/main/`,
+          // “Edit this page” opens the note in the site's own editor (/editor/).
+          editUrl: ({ docPath }) => `https://ritiksharma142001.github.io/one-notes/editor/?path=docs/${docPath}`,
           showLastUpdateTime: true,
           breadcrumbs: true,
         },
@@ -93,6 +94,7 @@ const config = {
           { to: '/interview/', label: 'Interview prep', position: 'left' },
           { to: '/system-design/fundamentals/', label: 'System design', position: 'left' },
           { to: '/tech-wiki/', label: 'Tech Wiki', position: 'left' },
+          { to: '/editor/', label: '✏️ Write', position: 'right' },
           { href: PORTFOLIO, label: 'Portfolio', position: 'right' },
           { href: GITHUB, position: 'right', className: 'header-github-link', 'aria-label': 'GitHub repository' },
         ],

@@ -4,6 +4,19 @@ A step-by-step guide for adding or editing notes on One Notes. Copy the template
 
 ---
 
+## 0. Easiest: write in the browser
+
+Open **✏️ Write** in the site's navbar (`/one-notes/editor/`), or **Edit this page** at the bottom of any note.
+
+- **Sign in once** with a GitHub fine-grained token: *Only select repositories → one-notes*, *Contents: Read and write* (plus *Actions: Read* to see when the site has updated). It stays in your browser.
+- **New note**: pick a folder (or create a folder / sub-folder), a title and a template — concept, interview Q&A, cheat sheet, how-to, comparison, system design or blank. The file name is made from the title.
+- **Writing**: toolbar or shortcuts (Ctrl+B / I / K / E), lists and code blocks continue on Enter, paste or drop images, callouts (`:::tip`), diagrams (` ```mermaid `), **✨ Tidy** (Shift+Alt+F) fixes spacing and formatting, **Checks** flags problems before publishing. Live preview beside it.
+- **Publish** (Ctrl+S): one commit to `main` with the note, any new folders and images; the editor shows when the site is live. Change the folder or file name to move / rename; ⋯ → Delete to remove.
+- New notes use plain-Markdown mode (`mdx: format: md`), so `<` and `{` in text can't break the build. Drafts are kept in the browser until you publish.
+- Not signed in? You can still write, preview and download the `.md`.
+
+---
+
 ## 1. Quick version (adding one page)
 
 1. Pick the folder in `docs/` that matches the topic (see the [folder map](#2-where-to-put-a-note)).
