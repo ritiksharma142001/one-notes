@@ -1,9 +1,10 @@
 /**
- * GitHub access for the notes editor. Everything happens in the browser with
- * the owner's fine-grained token (Contents: read & write on one-notes).
- * Saves are single commits made with the Git Data API, so a note, any new
- * folders and pasted images land together; reads use blob SHAs, which never
- * go stale after a commit.
+ * GitHub access for the notes editor, in the browser. Anyone can sign in
+ * with GitHub (through eritik.vercel.app, which holds the OAuth secret) or
+ * paste a token. The owner's saves are single commits to main made with the
+ * Git Data API, so a note, new folders and pasted images land together;
+ * everyone else's become a pull request from their own fork for the owner
+ * to review. Reads use blob SHAs, which never go stale after a commit.
  */
 
 export const OWNER = 'ritiksharma142001';
@@ -12,6 +13,9 @@ export const BRANCH = 'main';
 export const REPO_URL = `https://github.com/${OWNER}/${REPO}`;
 const API = 'https://api.github.com';
 const TOKEN_KEY = 'one-notes.editor.token';
+/** "Sign in with GitHub": the portfolio's OAuth app sends the token back to /editor/#gh_token=… */
+export const SIGN_IN_URL = 'https://eritik.vercel.app/api/studio/login?next=onenotes';
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 export const tokenStore = {
   get() {
@@ -52,7 +56,7 @@ function explain(status, body, path) {
   if (status === 401) return 'GitHub rejected the token — it may be expired or mistyped. Sign in again.';
   if (status === 403 && /rate limit/i.test(msg)) return 'GitHub rate limit reached — try again in a few minutes.';
   if (status === 403 || (status === 404 && /^(POST|PATCH) /.test(path)))
-    return 'This token can read but not write. Give it “Contents: Read and write” on the one-notes repository.';
+    return 'GitHub didn’t allow this change with your sign-in. Sign out and sign in again with GitHub.';
   if (status === 404) return `Not found on GitHub (${path}). Does the token have access to ${OWNER}/${REPO}?`;
   if (status === 409) return 'The repository is empty or busy — try again.';
   if (status === 422) return msg || 'GitHub refused the change.';
@@ -117,6 +121,31 @@ export class GitHub {
     return new TextDecoder().decode(bytes);
   }
 
+  /** Writes blobs, a tree and a commit (not yet on any branch) in owner/repo. */
+  async writeCommit(owner, repo, parent, baseTree, changes, message) {
+    const tree = [];
+    for (const c of changes) {
+      if (c.delete) {
+        tree.push({ path: c.path, mode: '100644', type: 'blob', sha: null });
+        continue;
+      }
+      const blob = await this.req(`/repos/${owner}/${repo}/git/blobs`, {
+        method: 'POST',
+        body: c.base64 != null ? { content: c.base64, encoding: 'base64' } : { content: c.text, encoding: 'utf-8' },
+      });
+      tree.push({ path: c.path, mode: '100644', type: 'blob', sha: blob.sha });
+    }
+    const newTree = await this.req(`/repos/${owner}/${repo}/git/trees`, {
+      method: 'POST',
+      body: { base_tree: baseTree, tree },
+    });
+    const commit = await this.req(`/repos/${owner}/${repo}/git/commits`, {
+      method: 'POST',
+      body: { message, tree: newTree.sha, parents: [parent] },
+    });
+    return commit.sha;
+  }
+
   /**
    * One commit with all changes: [{ path, text } | { path, base64 } | { path, delete: true }].
    * Retries once if someone pushed in between (it rebuilds on the new head).
@@ -125,26 +154,7 @@ export class GitHub {
     const ref = await this.req(`/repos/${OWNER}/${REPO}/git/ref/heads/${BRANCH}`);
     const parent = ref.object.sha;
     const base = await this.req(`/repos/${OWNER}/${REPO}/git/commits/${parent}`);
-    const tree = [];
-    for (const c of changes) {
-      if (c.delete) {
-        tree.push({ path: c.path, mode: '100644', type: 'blob', sha: null });
-        continue;
-      }
-      const blob = await this.req(`/repos/${OWNER}/${REPO}/git/blobs`, {
-        method: 'POST',
-        body: c.base64 != null ? { content: c.base64, encoding: 'base64' } : { content: c.text, encoding: 'utf-8' },
-      });
-      tree.push({ path: c.path, mode: '100644', type: 'blob', sha: blob.sha });
-    }
-    const newTree = await this.req(`/repos/${OWNER}/${REPO}/git/trees`, {
-      method: 'POST',
-      body: { base_tree: base.tree.sha, tree },
-    });
-    const commit = await this.req(`/repos/${OWNER}/${REPO}/git/commits`, {
-      method: 'POST',
-      body: { message, tree: newTree.sha, parents: [parent] },
-    });
+    const commit = { sha: await this.writeCommit(OWNER, REPO, parent, base.tree.sha, changes, message) };
     try {
       await this.req(`/repos/${OWNER}/${REPO}/git/refs/heads/${BRANCH}`, {
         method: 'PATCH',
@@ -155,6 +165,64 @@ export class GitHub {
       throw e;
     }
     return commit.sha;
+  }
+
+  /**
+   * For people who can't write to the repo: the same changes as a pull
+   * request from their own fork (created on first use). Returns the PR link.
+   */
+  async propose(changes, title, body, onStep = () => {}) {
+    onStep('Preparing your copy of the notes…');
+    const fork = await this.req(`/repos/${OWNER}/${REPO}/forks`, {
+      method: 'POST',
+      body: { default_branch_only: true },
+    });
+    const fo = fork.owner.login;
+    const fr = fork.name;
+    // A new fork takes a few seconds to appear; an old one may be behind.
+    for (let i = 0; ; i++) {
+      try {
+        await this.req(`/repos/${fo}/${fr}/git/ref/heads/${fork.default_branch || BRANCH}`);
+        break;
+      } catch (e) {
+        if (i >= 20) throw new GitHubError('GitHub is still creating your copy of the notes — try again in a minute.', 0);
+        await sleep(1500);
+      }
+    }
+    await this.req(`/repos/${fo}/${fr}/merge-upstream`, {
+      method: 'POST',
+      body: { branch: fork.default_branch || BRANCH },
+    }).catch(() => {});
+
+    const head = (await this.req(`/repos/${OWNER}/${REPO}/git/ref/heads/${BRANCH}`)).object.sha;
+    const base = await this.req(`/repos/${OWNER}/${REPO}/git/commits/${head}`);
+    const branch = `notes-edit-${new Date().toISOString().slice(0, 19).replace(/[-:T]/g, '')}`;
+    // The new branch starts at the owner's latest commit (the fork may need
+    // a moment to receive it after syncing).
+    for (let i = 0; ; i++) {
+      try {
+        await this.req(`/repos/${fo}/${fr}/git/refs`, {
+          method: 'POST',
+          body: { ref: `refs/heads/${branch}`, sha: head },
+        });
+        break;
+      } catch (e) {
+        if (i >= 8 || e.status !== 422) throw e;
+        await sleep(2000);
+      }
+    }
+    onStep('Saving your changes…');
+    const sha = await this.writeCommit(fo, fr, head, base.tree.sha, changes, title);
+    await this.req(`/repos/${fo}/${fr}/git/refs/heads/${branch}`, {
+      method: 'PATCH',
+      body: { sha, force: false },
+    });
+    onStep('Sending it for review…');
+    const pr = await this.req(`/repos/${OWNER}/${REPO}/pulls`, {
+      method: 'POST',
+      body: { title, head: `${fo}:${branch}`, base: BRANCH, body, maintainer_can_modify: true },
+    });
+    return { url: pr.html_url, number: pr.number };
   }
 
   /** The GitHub Pages deploy run for a commit: { status, conclusion, url } or null. */

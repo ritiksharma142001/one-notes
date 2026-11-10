@@ -8,7 +8,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useColorMode } from '@docusaurus/theme-common';
-import { BRANCH, GitHub, OWNER, REPO, REPO_URL, fileToBase64, tokenStore } from './github';
+import { BRANCH, GitHub, OWNER, REPO, REPO_URL, SIGN_IN_URL, fileToBase64, tokenStore } from './github';
 import * as M from './markdown';
 import s from './editor.module.css';
 
@@ -90,65 +90,59 @@ function SignIn({ onToken, onGuest, error }) {
     <div className={s.signin}>
       <h2>Write &amp; publish notes</h2>
       <p>
-        Notes are saved straight to <a href={REPO_URL}>{OWNER}/{REPO}</a> on GitHub and the site republishes itself in about
-        two minutes. Sign in with a GitHub token that can write to that repository.
+        Anyone can sign in with their GitHub account. Your changes are sent to <a href={REPO_URL}>{OWNER}/{REPO}</a> as a
+        suggestion (a pull request) for the owner to review; once accepted, the site updates itself.
       </p>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          if (token.trim()) onToken(token.trim(), remember);
-        }}
-      >
-        <label className={s.label} htmlFor="gh-token">
-          GitHub token
-        </label>
-        <input
-          id="gh-token"
-          className={s.input}
-          type="password"
-          autoComplete="off"
-          spellCheck={false}
-          placeholder="github_pat_…"
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-        />
-        <label className={s.check}>
-          <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} /> Remember on this
-          device
-        </label>
-        {error && <p className={s.error}>{error}</p>}
-        <div className={s.row}>
-          <button type="submit" className="button button--primary" disabled={!token.trim()}>
-            Sign in
-          </button>
-          <button type="button" className="button button--secondary" onClick={onGuest}>
-            Continue without signing in
-          </button>
-        </div>
-      </form>
+      <div className={s.row}>
+        <a className="button button--primary" href={SIGN_IN_URL}>
+          Sign in with GitHub
+        </a>
+        <button type="button" className="button button--secondary" onClick={onGuest}>
+          Continue without signing in
+        </button>
+      </div>
+      {error && <p className={s.error}>{error}</p>}
+      <p className={s.muted}>
+        No GitHub account? <a href="https://github.com/signup" target="_blank" rel="noreferrer">Create one free</a>. Without
+        signing in you can still write notes, preview them and download the .md file.
+      </p>
       <details className={s.help}>
-        <summary>How do I get a token? (1 minute)</summary>
-        <ol>
-          <li>
-            Open{' '}
-            <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noreferrer">
-              GitHub → New fine-grained token
-            </a>
-            .
-          </li>
-          <li>Name it “One Notes editor” and pick an expiry.</li>
-          <li>
-            <b>Repository access</b> → <i>Only select repositories</i> → <code>{REPO}</code>.
-          </li>
-          <li>
-            <b>Permissions</b> → Repository → <b>Contents: Read and write</b> (and <b>Actions: Read</b> to see when the site
-            has updated).
-          </li>
-          <li>Generate, copy, paste it above.</li>
-        </ol>
+        <summary>Use a token instead</summary>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (token.trim()) onToken(token.trim(), remember);
+          }}
+        >
+          <label className={s.label} htmlFor="gh-token">
+            GitHub token
+          </label>
+          <input
+            id="gh-token"
+            className={s.input}
+            type="password"
+            autoComplete="off"
+            spellCheck={false}
+            placeholder="github_pat_… or ghp_…"
+            value={token}
+            onChange={(e) => setToken(e.target.value)}
+          />
+          <label className={s.check}>
+            <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} /> Remember on this
+            device
+          </label>
+          <div className={s.row}>
+            <button type="submit" className="button button--secondary" disabled={!token.trim()}>
+              Sign in with token
+            </button>
+          </div>
+        </form>
         <p className={s.muted}>
-          The token stays in this browser and is only sent to api.github.com. Without signing in you can still write notes,
-          preview them and download the .md file.
+          A token from{' '}
+          <a href="https://github.com/settings/tokens/new?scopes=public_repo&description=One%20Notes%20editor" target="_blank" rel="noreferrer">
+            GitHub → Tokens
+          </a>{' '}
+          with the <code>public_repo</code> scope works. It stays in this browser and is only sent to api.github.com.
         </p>
       </details>
     </div>
@@ -304,6 +298,32 @@ export default function Editor() {
     setToast(msg);
     window.clearTimeout(flash.t);
     flash.t = window.setTimeout(() => setToast(''), 3500);
+  }, []);
+
+  // Back from "Sign in with GitHub": the token arrives in the address's
+  // #fragment (never sent to a server). Keep it and clean the address bar.
+  useEffect(() => {
+    const hash = new URLSearchParams(window.location.hash.slice(1));
+    const query = new URLSearchParams(window.location.search);
+    const t = hash.get('gh_token');
+    const err = query.get('error');
+    if (!t && !err) return;
+    if (t) {
+      tokenStore.set(t, true);
+      setToken(t);
+      setGuest(false);
+    }
+    if (err)
+      setAuthError(
+        {
+          state: 'Sign-in took too long or was opened in another tab. Please try again.',
+          github: 'GitHub didn’t complete the sign-in. Please try again.',
+          'not-configured': 'GitHub sign-in isn’t available right now. Use a token instead.',
+        }[err] || 'Sign-in failed. Please try again.',
+      );
+    query.delete('error');
+    const q = query.toString();
+    window.history.replaceState(null, '', window.location.pathname + (q ? `?${q}` : ''));
   }, []);
 
   useEffect(() => local.set(VIEW_KEY, view), [view]);
@@ -738,6 +758,16 @@ export default function Editor() {
         }
       }
       const changes = plannedChanges();
+      if (!canPush) {
+        const pr = await gh.propose(changes, message, prBody(), setBusy);
+        local.del(DRAFT_PREFIX + (doc.path || 'new'));
+        local.del(DRAFT_PREFIX + target);
+        setDoc((d) => ({ ...d, baseText: M.joinDoc(d.fm, d.body), draft: null }));
+        setDialog(null);
+        setDeploy({ state: 'pr', url: pr.url, sha: `pr-${pr.number}` });
+        flash(`Sent for review ✓ (pull request #${pr.number})`);
+        return;
+      }
       const sha = await gh.commit(changes, message);
       const sn = await loadSnapshot(sha);
       const entry = sn.entries.find((e) => e.path === target);
@@ -761,6 +791,13 @@ export default function Editor() {
   const remove = async () => {
     setBusy('Deleting…');
     try {
+      if (!canPush) {
+        const pr = await gh.propose([{ path: doc.path, delete: true }, ...emptiedFolders(doc.path)], `Delete notes: ${title || fileSlug(doc.path)}`, prBody(), setBusy);
+        setDialog(null);
+        setDeploy({ state: 'pr', url: pr.url, sha: `pr-${pr.number}` });
+        flash(`Deletion sent for review ✓ (pull request #${pr.number})`);
+        return;
+      }
       const sha = await gh.commit([{ path: doc.path, delete: true }, ...emptiedFolders(doc.path)], `Delete notes: ${title || fileSlug(doc.path)}`);
       await loadSnapshot(sha);
       local.del(DRAFT_PREFIX + doc.path);
@@ -775,6 +812,11 @@ export default function Editor() {
       setBusy('');
     }
   };
+
+  /** Owner (or a collaborator) publishes directly; everyone else suggests. */
+  const canPush = Boolean(me && me.canPush);
+  const prBody = () =>
+    `Suggested from the [One Notes editor](${window.location.origin}${siteBase}editor/) by @${me ? me.login : 'someone'}.\n\nPage: \`${target || (doc && doc.path) || ''}\``;
 
   const download = () => {
     const blob = new Blob([`${text.replace(/\s*$/, '')}\n`], { type: 'text/markdown' });
@@ -919,7 +961,7 @@ export default function Editor() {
                   {dirty ? <span className={s.unsaved}>{doc.path ? 'Unpublished changes' : 'New — not published'}</span> : <span className={s.saved}>Published</span>}
                   {gh ? (
                     <button type="button" className="button button--primary button--sm" onClick={() => setDialog({ type: 'save' })} disabled={!!busy || (!dirty && !!doc.path)}>
-                      {busy === 'Publishing…' ? 'Publishing…' : 'Publish'}
+                      {busy || (canPush ? 'Publish' : 'Suggest changes')}
                     </button>
                   ) : (
                     <button type="button" className="button button--primary button--sm" onClick={download}>
@@ -1226,7 +1268,8 @@ export default function Editor() {
           changes={plannedChanges()}
           blockers={saveProblems()}
           problems={problems}
-          busy={busy === 'Publishing…'}
+          busy={!!busy}
+          canPush={canPush}
           onClose={() => setDialog(null)}
           onPublish={publish}
         />
@@ -1246,13 +1289,20 @@ export default function Editor() {
       )}
       {dialog && dialog.type === 'delete' && doc && (
         <Modal title="Delete this note?" onClose={() => setDialog(null)}>
-          <p>
-            <code>{doc.path}</code> will be removed from GitHub and the site. You can still recover it from the repository’s
-            history.
-          </p>
+          {canPush ? (
+            <p>
+              <code>{doc.path}</code> will be removed from GitHub and the site. You can still recover it from the repository’s
+              history.
+            </p>
+          ) : (
+            <p>
+              A request to remove <code>{doc.path}</code> is sent to the owner for review. Nothing is deleted unless they accept
+              it.
+            </p>
+          )}
           <div className={s.row}>
             <button type="button" className="button button--danger" onClick={remove} disabled={!!busy}>
-              {busy ? 'Deleting…' : 'Delete'}
+              {busy || (canPush ? 'Delete' : 'Suggest deletion')}
             </button>
             <button type="button" className="button button--secondary" onClick={() => setDialog(null)}>
               Cancel
@@ -1272,6 +1322,7 @@ function DeployChip({ deploy }) {
     live: '✅ Live on the site',
     failed: '❌ Site build failed — open the log',
     unknown: 'ℹ️ Published — check GitHub Actions for the rebuild',
+    pr: '📨 Sent for review — open your pull request',
   }[deploy.state];
   return (
     <div className={`${s.deploy} ${s[`deploy_${deploy.state}`]}`}>
@@ -1433,12 +1484,12 @@ function NewFolderDialog({ folders, labelOf, parent: initialParent, onClose, onC
   );
 }
 
-function SaveDialog({ doc, title, moved, target, changes, blockers, problems, busy, onClose, onPublish }) {
+function SaveDialog({ doc, title, moved, target, changes, blockers, problems, busy, canPush, onClose, onPublish }) {
   const verb = !doc.path ? 'Add' : moved ? 'Move' : 'Update';
   const [message, setMessage] = useState(`${verb} notes: ${title || doc.slug}`);
   const errors = problems.filter((p) => p.level === 'error' && p.fix !== 'plain');
   return (
-    <Modal title="Publish to GitHub" onClose={onClose}>
+    <Modal title={canPush ? 'Publish to GitHub' : 'Suggest these changes'} onClose={onClose}>
       {blockers.length ? (
         <ul className={s.problems}>
           {blockers.map((b) => (
@@ -1454,7 +1505,16 @@ function SaveDialog({ doc, title, moved, target, changes, blockers, problems, bu
             onPublish(message.trim() || `${verb} notes`);
           }}
         >
-          <p className={s.muted}>One commit to the {BRANCH} branch:</p>
+          <p className={s.muted}>
+            {canPush ? (
+              <>One commit to the {BRANCH} branch:</>
+            ) : (
+              <>
+                A pull request to {OWNER}/{REPO}, from your own copy on GitHub. The owner reviews it; once accepted, the site
+                updates. Changes:
+              </>
+            )}
+          </p>
           <ul className={s.changes}>
             {changes.map((c) => (
               <li key={c.path}>
@@ -1468,12 +1528,12 @@ function SaveDialog({ doc, title, moved, target, changes, blockers, problems, bu
             </p>
           )}
           <label className={s.label} htmlFor="commit-msg">
-            Commit message
+            {canPush ? 'Commit message' : 'Short description'}
           </label>
           <input id="commit-msg" className={s.input} autoFocus value={message} onChange={(e) => setMessage(e.target.value)} />
           <div className={s.row}>
             <button type="submit" className="button button--primary" disabled={busy}>
-              {busy ? 'Publishing…' : 'Publish'}
+              {busy ? (canPush ? 'Publishing…' : 'Sending…') : canPush ? 'Publish' : 'Send for review'}
             </button>
             <button type="button" className="button button--secondary" onClick={onClose}>
               Cancel

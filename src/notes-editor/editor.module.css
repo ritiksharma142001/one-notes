@@ -490,6 +490,9 @@
   font-size: 0.85rem;
   z-index: 5;
 }
+.deploy_pr {
+  border-color: var(--ifm-color-primary);
+}
 .deploy_live {
   border-color: var(--ifm-color-success);
 }
