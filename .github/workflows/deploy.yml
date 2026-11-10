@@ -10,9 +10,12 @@ permissions:
   pages: write
   id-token: write
 
+# One Pages deployment at a time. In-progress deployments are never cancelled
+# (GitHub's recommendation): a cancelled one can leave Pages stuck, so later
+# deployments wait with an empty status until they time out.
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 jobs:
   build:
