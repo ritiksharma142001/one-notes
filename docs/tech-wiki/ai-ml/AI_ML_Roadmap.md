@@ -10,6 +10,8 @@ mdx:
 > **How to read this file:** The roadmap goes in order. Each phase lists **what to learn**, **what to build**, and **how you know you're done**. Every phase ends with a **📘 Terms Explained** table. Use the `- [ ]` checkboxes to track progress (they're clickable in Obsidian).
 >
 > **Last updated:** October 2026. AI moves fast, so model names and tool versions will age. The concepts won't.
+>
+> **Hands-on AI engineering course:** Phases 6-7 (LLMs, RAG, agents) are taught week by week, with runnable code and weekly builds, in [00_AI_Engineering_Index.md](../ai-engineering/00_AI_Engineering_Index.md).
 
 ---
 

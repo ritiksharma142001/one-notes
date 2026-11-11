@@ -136,6 +136,7 @@ const config = {
               { label: 'Design patterns', to: '/tech-wiki/design-patterns/Design_Patterns_Complete_List/' },
               { label: 'Docker', to: '/tech-wiki/docker/Docker_Index/' },
               { label: 'Kubernetes', to: '/tech-wiki/kubernetes/Kubernetes_Index/' },
+              { label: 'AI engineering', to: '/tech-wiki/ai-engineering/AI_Engineering_Index/' },
             ],
           },
           {

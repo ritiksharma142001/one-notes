@@ -3,7 +3,7 @@
   "position": 15,
   "link": {
     "type": "generated-index",
-    "description": "Long-form study guides: Java, Spring, design patterns, system design, Docker, Kubernetes, DevOps, SQL, React, Python/AI-ML and C++.",
+    "description": "Long-form study guides: Java, Spring, design patterns, system design, Docker, Kubernetes, DevOps, SQL, React, Python/AI-ML, AI engineering (RAG, agents, evals, MCP) and C++.",
     "slug": "/tech-wiki"
   }
 }
